@@ -47,18 +47,20 @@ public class CharacterController : MonoBehaviour
         if (CurrentHealth < 0)
             Die();
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("collide");
-        if (collision.transform.tag == "MidHit")
+        if (CanTakeDamage == true)
         {
-            myanimator.Play("MidHit");
-            StartCoroutine(InvincibilityWait());
-        }
-        else if (collision.transform.tag == "HighHit")
-        {
-            StartCoroutine(InvincibilityWait());
-            myanimator.Play("HighHit");
+            if (collision.transform.tag == "MidHit")
+            {
+                myanimator.Play("MidHit");
+                StartCoroutine(InvincibilityWait());
+            }
+            else if (collision.transform.tag == "HighHit")
+            {
+                StartCoroutine(InvincibilityWait());
+                myanimator.Play("HighHit");
+            }
         }
     }
 

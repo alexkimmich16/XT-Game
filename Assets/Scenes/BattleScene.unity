@@ -1166,7 +1166,7 @@ MonoBehaviour:
   TrueSpeed: {x: 0, y: 0}
   Facing: {fileID: 78997009}
   XDrag: 6.18
-  Invincibility: 0
+  Invincibility: 1.93
   MaxHealth: 0
 --- !u!50 &495356576
 Rigidbody2D:

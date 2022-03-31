@@ -31,6 +31,18 @@ namespace Custom
             Debug.LogError("Get Local Failure");
             return 100;
         }
+        public static int GetOther()
+        {
+            for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
+            {
+                if (PhotonNetwork.LocalPlayer != PhotonNetwork.PlayerList[i])
+                {
+                    return i;
+                }
+            }
+            Debug.LogError("Get Local Failure");
+            return 100;
+        }
         #region NetworkGet
         public static float GetGameFloat(string text)
         {

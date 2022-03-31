@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using static Custom.Cus;
+using Photon.Pun;
 
 public class HealthControl : MonoBehaviour
 {
@@ -13,7 +15,15 @@ public class HealthControl : MonoBehaviour
     public Sprite Lose;
     public Sprite Empty;
 
+    public void UpdateHealth()
+    {
+        float PlayerHealthBar = CharacterController.instance.CurrentHealth / CharacterController.MaxHealth;
+        Sides[0].SetFillSize(PlayerHealthBar);
+        
 
+        float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.MaxHealth;
+        Sides[1].SetFillSize(EnemyHealth);
+    }
     [System.Serializable]
     public class Side
     {
@@ -34,5 +44,10 @@ public class HealthControl : MonoBehaviour
                 Sides[Side].Dots[i].GetComponent<Image>().sprite = Win;
                 return;
             }
+    }
+
+    private void Start()
+    {
+        UpdateHealth();
     }
 }

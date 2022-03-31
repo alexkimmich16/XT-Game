@@ -38,7 +38,7 @@ public class CharacterController : MonoBehaviour
     public float Invincibility;
 
     //public int MaxHealth;
-    private int CurrentHealth;
+    public int CurrentHealth;
 
     private bool FacingLeftSave;
 
@@ -79,8 +79,8 @@ public class CharacterController : MonoBehaviour
     public void TakeDamage(int Take)
     {
         CurrentHealth -= Take;
-
         SetPlayerInt(PlayerHealth, CurrentHealth, PhotonNetwork.LocalPlayer);
+        HealthControl.instance.UpdateHealth();
         if (CurrentHealth < 0)
             Die();
     }

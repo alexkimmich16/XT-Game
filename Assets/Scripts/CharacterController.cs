@@ -1,10 +1,13 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using static Custom.Cus;
+using Photon.Pun;
 
 public class CharacterController : MonoBehaviour
 {
+    public static CharacterController instance;
+    private void Awake() { instance = this; }
+
     [SerializeField] float runspeed = 10f;
     [SerializeField] float walkForwardSpeed = 10f;
     [SerializeField] float walkBackSpeed = 10f;
@@ -34,16 +37,50 @@ public class CharacterController : MonoBehaviour
     private bool CanTakeDamage = true;
     public float Invincibility;
 
-    public int MaxHealth;
+    //public int MaxHealth;
     private int CurrentHealth;
 
     private bool FacingLeftSave;
 
     private bool TouchedA;
     private bool TouchedD;
+
+    public static int MaxHealth = 120;
+
+    public void Initialize(int Count)
+    {
+        //Debug.Log(PhotonNetwork.LocalPlayer.);
+        //SetPlayerInt(PlayerHealth, MaxHealth, PhotonNetwork.LocalPlayer);
+        
+        
+        //Debug.Log("Exists: " + Exists(PlayerHealth, PhotonNetwork.LocalPlayer));
+        //Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.LocalPlayer));
+        
+
+
+        
+        //Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.LocalPlayer));
+        if (Count == 0)
+        {
+            //im first
+            //Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[0]));
+            //Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[0]));
+        }
+        else if(Count == 1)
+        {
+            //i'm secpond
+            Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[0]));
+            Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[0]));
+            Debug.Log("Health1: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[1]));
+            Debug.Log("Team1: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[1]));
+        }
+        
+    }
     public void TakeDamage(int Take)
     {
         CurrentHealth -= Take;
+
+        SetPlayerInt(PlayerHealth, CurrentHealth, PhotonNetwork.LocalPlayer);
         if (CurrentHealth < 0)
             Die();
     }
@@ -76,6 +113,7 @@ public class CharacterController : MonoBehaviour
         myyRigidbody = GetComponent<Rigidbody2D>();
         myanimator = GetComponent<Animator>();
         mycapsuleCollider2D = GetComponent<CapsuleCollider2D>();
+        CurrentHealth = MaxHealth;
     }
     Vector2 GetInput()
     {
@@ -116,6 +154,9 @@ public class CharacterController : MonoBehaviour
     }
     void Update()
     {
+
+        
+
         if (!isalive) { return; }
         FacingLeftSave = FacingRight();
         //if (FacingLeftSave != FacingLeft())

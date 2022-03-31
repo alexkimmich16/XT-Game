@@ -544,7 +544,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7807787923426265871}
   - component: {fileID: 7807787923426720207}
-  - component: {fileID: 7807787923412120687}
   m_Layer: 5
   m_Name: BattleGUI
   m_TagString: Untagged
@@ -590,92 +589,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7807787923406586287}
   m_CullTransparentMesh: 0
---- !u!114 &7807787923412120687
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7807787923406586287}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dfd0a45b7015c4dd29a0c9cd78ec7d64, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canvasPreview: 1
-  firstSelectableGameObject: {fileID: 0}
-  hasFadeIn: 1
-  hasFadeOut: 1
-  wrapInput: 1
-  inputTexturePlaceHolder: {fileID: 2800000, guid: 994bfcf558a120643b9496e55f85517e,
-    type: 3}
-  inputViewerBuffer: 12
-  muteAnnouncer: 0
-  announcer:
-    announcerName: 
-    round1: {fileID: 8300000, guid: f475a23da438b434989d3510c6394779, type: 3}
-    round2: {fileID: 8300000, guid: 4d2ddf6c55385b24c9d5684bf7dfdd09, type: 3}
-    round3: {fileID: 8300000, guid: 8f28c0add4599cb409fde079faf05036, type: 3}
-    otherRounds: {fileID: 8300000, guid: 8f28c0add4599cb409fde079faf05036, type: 3}
-    finalRound: {fileID: 8300000, guid: 8f28c0add4599cb409fde079faf05036, type: 3}
-    fight: {fileID: 8300000, guid: 8e39e137a16e6d44699979a55a3f5391, type: 3}
-    player1Wins: {fileID: 0}
-    player2Wins: {fileID: 0}
-    perfect: {fileID: 0}
-    firstHit: {fileID: 0}
-    counterHit: {fileID: 0}
-    parry: {fileID: 0}
-    timeOver: {fileID: 0}
-    ko: {fileID: 0}
-    combos: []
-  wonRounds:
-    NotFinishedRounds: {fileID: 21300000, guid: a38dc7db859b547f0975e042056a836e,
-      type: 3}
-    WonRounds: {fileID: 21300000, guid: d7e59030e811f40c3b650e1355f2fef0, type: 3}
-    LostRounds: {fileID: 21300000, guid: 2dc3593fad8a6487292c722ef858a90a, type: 3}
-    VisibleImages: 0
-  player1GUI:
-    name: {fileID: 7807787923412120663}
-    portrait: {fileID: 7807787923412341543}
-    lifeBar: {fileID: 7807787923412269405}
-    gauges:
-    - {fileID: 7912102413794213689}
-    - {fileID: 7912134157902914879}
-    wonRoundsImages:
-    - {fileID: 7807787923412120711}
-    - {fileID: 7807787923412120713}
-    alert:
-      text: {fileID: 7807787923412120655}
-      initialPosition: {x: 80, y: -250, z: 0}
-      finalPosition: {x: 80, y: -200, z: 0}
-      movementSpeed: 15
-  player2GUI:
-    name: {fileID: 7807787923412120665}
-    portrait: {fileID: 7807787923412284035}
-    lifeBar: {fileID: 7807787923412343781}
-    gauges:
-    - {fileID: 7807787923412332629}
-    - {fileID: 7807787923412264083}
-    wonRoundsImages:
-    - {fileID: 7807787923412120659}
-    - {fileID: 7807787923412120715}
-    alert:
-      text: {fileID: 7807787923412120691}
-      initialPosition: {x: -80, y: -250, z: 0}
-      finalPosition: {x: -80, y: -200, z: 0}
-      movementSpeed: 15
-  mainAlert:
-    text: {fileID: 7807787923412120653}
-    initialPosition: {x: 0, y: -100, z: 0}
-    finalPosition: {x: 0, y: -85, z: 0}
-    movementSpeed: 15
-  info: {fileID: 7807787923412120685}
-  timer: {fileID: 7807787923412120717}
-  lifeDownSpeed: 500
-  lifeUpSpeed: 800
-  pauseScreen: {fileID: 11400000, guid: 6241d31f6482b42a88a8e7c8b62e2716, type: 3}
-  networkPlayerPointer: {fileID: 0}
-  pointerTimer: 4
 --- !u!1 &7807787923406586289
 GameObject:
   m_ObjectHideFlags: 0

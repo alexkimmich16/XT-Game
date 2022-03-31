@@ -6,9 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/UFE/Demo/Demo.unity
-    guid: a4f99dda2dd9d4442b85a6936f4bb0d9
-  - enabled: 1
-    path: Assets/UFE/Demo/Stages/TrainingRoom/TrainingRoom.unity
-    guid: ce5dc4bef69a67f42af2551ac38b3998
+    path: Assets/Scenes/BattleScene.unity
+    guid: cd50d29f065924444996dfc28ee2bf14
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

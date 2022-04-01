@@ -38,27 +38,18 @@ public class CharacterController : MonoBehaviour
     public float Invincibility;
 
     //public int MaxHealth;
-    public int CurrentHealth;
+    
 
     private bool FacingLeftSave;
 
     private bool TouchedA;
     private bool TouchedD;
 
-    public static int MaxHealth = 120;
+    public int CurrentHealth;
+    public int MaxHealth = 120;
 
     public void Initialize(int Count)
     {
-        //Debug.Log(PhotonNetwork.LocalPlayer.);
-        //SetPlayerInt(PlayerHealth, MaxHealth, PhotonNetwork.LocalPlayer);
-        
-        
-        //Debug.Log("Exists: " + Exists(PlayerHealth, PhotonNetwork.LocalPlayer));
-        //Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.LocalPlayer));
-        
-
-
-        
         //Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.LocalPlayer));
         if (Count == 0)
         {
@@ -69,10 +60,6 @@ public class CharacterController : MonoBehaviour
         else if(Count == 1)
         {
             //i'm secpond
-            Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[0]));
-            Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[0]));
-            Debug.Log("Health1: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[1]));
-            Debug.Log("Team1: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[1]));
         }
         
     }
@@ -91,16 +78,17 @@ public class CharacterController : MonoBehaviour
             if (collision.transform.tag == "MidHit")
             {
                 myanimator.Play("MidHit");
+                TakeDamage(10);
                 StartCoroutine(InvincibilityWait());
             }
             else if (collision.transform.tag == "HighHit")
             {
                 StartCoroutine(InvincibilityWait());
+                TakeDamage(10);
                 myanimator.Play("HighHit");
             }
         }
     }
-
     IEnumerator InvincibilityWait()
     {
         CanTakeDamage = false;
@@ -154,9 +142,6 @@ public class CharacterController : MonoBehaviour
     }
     void Update()
     {
-
-        
-
         if (!isalive) { return; }
         FacingLeftSave = FacingRight();
         //if (FacingLeftSave != FacingLeft())
@@ -305,7 +290,6 @@ public class CharacterController : MonoBehaviour
             multiplier = 0.0f;
         myyRigidbody.velocity = new Vector2(myyRigidbody.velocity.x * multiplier, myyRigidbody.velocity.y);
     }
-    
     void FaceDirection(bool IsLeft)
     {
         if (IsLeft)
@@ -314,7 +298,6 @@ public class CharacterController : MonoBehaviour
             transform.localScale = new Vector2(-Size, Size);
         //bool playerhorizatanlspeed = Mathf.Abs(myyRigidbody.velocity.x) > Mathf.Epsilon;
     }
-
     void Die()
     {
         if (mycapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("enemies")))

@@ -389,25 +389,25 @@ namespace Photon.Realtime
         /// </returns>
         public bool SetCustomProperties(Hashtable propertiesToSet, Hashtable expectedValues = null, WebFlags webFlags = null)
         {
+            //Debug.Log("No Properties1");
             if (propertiesToSet == null || propertiesToSet.Count == 0)
             {
-                Debug.Log("NoPropertiesToSet");
+                //Debug.Log("No Properties1");
                 return false;
             }
 
             Hashtable customProps = propertiesToSet.StripToStringKeys() as Hashtable;
-            //Debug.Log("PT1");
+            //Debug.Log("Pt1");
             if (this.RoomReference != null)
             {
-                //Debug.Log("PT2");
+                //Debug.Log("Pt2");
                 if (this.RoomReference.IsOffline)
                 {
-                    
                     if (customProps.Count == 0)
                     {
+                        //Debug.Log("No Properties2");
                         return false;
                     }
-                    
                     this.CustomProperties.Merge(customProps);
                     this.CustomProperties.StripKeysWithNullValues();
                     // invoking callbacks
@@ -416,21 +416,18 @@ namespace Photon.Realtime
                 }
                 else
                 {
+                    //Debug.Log("Pt3");
                     Hashtable customPropsToCheck = expectedValues.StripToStringKeys() as Hashtable;
-                    //Debug.Log(customPropsToCheck.TryGetValue("Kills", out object temp));
 
-
-                    if (customProps.TryGetValue("Kills", out object temp2))
-                        //Debug.Log("Temp: " + (int)temp2);
                     // send (sync) these new values if in online room
                     return this.RoomReference.LoadBalancingClient.OpSetPropertiesOfActor(this.actorNumber, customProps, customPropsToCheck, webFlags);
                 }
             }
-            Debug.Log("PT5");
             if (this.IsLocal)
             {
                 if (customProps.Count == 0)
                 {
+                    //Debug.Log("No Properties3");
                     return false;
                 }
                 if (expectedValues == null && webFlags == null)
@@ -440,7 +437,7 @@ namespace Photon.Realtime
                     return true;
                 }
             }
-            Debug.Log("PT6");
+            //Debug.Log("No Properties4");
             return false;
         }
 

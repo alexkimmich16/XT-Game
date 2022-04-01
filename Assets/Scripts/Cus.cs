@@ -67,6 +67,7 @@ namespace Custom
         }
         public static int GetPlayerInt(string text, Player player)
         {
+            Debug.Log(text);
             if (player.CustomProperties.TryGetValue(text, out object temp))
                 return (int)temp;
             else
@@ -157,6 +158,7 @@ namespace Custom
         {
             Hashtable HealthHash = new Hashtable();
             HealthHash.Add(text, SetNum);
+            
             PhotonNetwork.CurrentRoom.SetCustomProperties(HealthHash);
         }
         

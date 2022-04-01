@@ -17,12 +17,15 @@ public class HealthControl : MonoBehaviour
 
     public void UpdateHealth()
     {
-        float PlayerHealthBar = CharacterController.instance.CurrentHealth / CharacterController.MaxHealth;
+        float PlayerHealthBar = (float)CharacterController.instance.CurrentHealth / (float)CharacterController.instance.MaxHealth;
         Sides[0].SetFillSize(PlayerHealthBar);
-        
 
-        float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.MaxHealth;
-        Sides[1].SetFillSize(EnemyHealth);
+        if(PhotonNetwork.PlayerList.Length > 1)
+        {
+            float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
+            Sides[1].SetFillSize(EnemyHealth);
+        }
+        
     }
     [System.Serializable]
     public class Side
@@ -35,7 +38,6 @@ public class HealthControl : MonoBehaviour
             Fill.fillAmount = Set;
         }
     }
-
     public void DisplayWin(int Side)
     {
         for(int i = 0; i > Sides[Side].Dots.Count; i++)
@@ -45,7 +47,6 @@ public class HealthControl : MonoBehaviour
                 return;
             }
     }
-
     private void Start()
     {
         UpdateHealth();

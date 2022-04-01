@@ -18,4 +18,5 @@ public class MultiplayerController : MonoBehaviourPunCallbacks
         base.OnLeftRoom();
         PhotonNetwork.Destroy(SpawnedPlayerPrefab);
     }
+
 }

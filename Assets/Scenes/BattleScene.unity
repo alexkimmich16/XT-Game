@@ -1430,7 +1430,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7807787923412120699, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120689, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120695, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120703, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120693, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120701, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
+    - {fileID: 7807787923412120697, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 1b8b193cac7d9d94284967dcb1d883c4, type: 3}
 --- !u!224 &871756044 stripped
 RectTransform:
@@ -2434,7 +2441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29973bd9c1cbf2d4bbab83bf5a710d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugScript: 1
+  DebugScript: 0
 --- !u!1 &1675855577
 GameObject:
   m_ObjectHideFlags: 0
@@ -3291,7 +3298,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5739429156578297872}
   - component: {fileID: 5739429156578297875}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MidHit
   m_TagString: MidHit
   m_Icon: {fileID: 0}
@@ -3435,7 +3442,7 @@ GameObject:
   - component: {fileID: 5739429156980127049}
   - component: {fileID: 5739429156980127094}
   - component: {fileID: 5739429156980127095}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MyCharacter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3465,6 +3472,8 @@ MonoBehaviour:
   Facing: {fileID: 78997009}
   XDrag: 6.18
   Invincibility: 1.93
+  CurrentHealth: 0
+  MaxHealth: 120
 --- !u!70 &5739429156980127095
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -3521,7 +3530,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5739429157648388553}
   - component: {fileID: 5739429157648388552}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: HighHit
   m_TagString: HighHit
   m_Icon: {fileID: 0}

@@ -20,9 +20,10 @@ public class CharacterController : MonoBehaviour
     public Vector2 TrueSpeed;
     Rigidbody2D myyRigidbody;
     Animator myanimator;
+    Animator PhotonAnimator;
     CapsuleCollider2D mycapsuleCollider2D;
     bool isalive = true;
-    public Transform Facing;
+    //public Transform Facing;
     private bool Jumping = false;
     private bool Crouching = false;
     private bool DetectingJumpLand = false;
@@ -37,31 +38,24 @@ public class CharacterController : MonoBehaviour
     private bool CanTakeDamage = true;
     public float Invincibility;
 
-    //public int MaxHealth;
-    
-
-    private bool FacingLeftSave;
-
     private bool TouchedA;
     private bool TouchedD;
 
     public int CurrentHealth;
     public int MaxHealth = 120;
 
+    public GameObject Spawned;
+    public GameObject Other;
+
+    public void SetSpawned(GameObject SpawnedOBJ)
+    {
+        Spawned = SpawnedOBJ;
+        Spawned.transform.GetChild(0).gameObject.SetActive(false);
+        PhotonAnimator = Spawned.transform.GetChild(0).GetComponent<Animator>();
+    }
     public void Initialize(int Count)
     {
-        //Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.LocalPlayer));
-        if (Count == 0)
-        {
-            //im first
-            //Debug.Log("Health0: " + GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[0]));
-            //Debug.Log("Team0: " + GetPlayerInt(PlayerTeam, PhotonNetwork.PlayerList[0]));
-        }
-        else if(Count == 1)
-        {
-            //i'm secpond
-        }
-        
+
     }
     public void TakeDamage(int Take)
     {
@@ -77,7 +71,9 @@ public class CharacterController : MonoBehaviour
         {
             if (collision.transform.tag == "MidHit")
             {
+                
                 myanimator.Play("MidHit");
+                PhotonAnimator.Play("MidHit");
                 TakeDamage(10);
                 StartCoroutine(InvincibilityWait());
             }
@@ -86,6 +82,7 @@ public class CharacterController : MonoBehaviour
                 StartCoroutine(InvincibilityWait());
                 TakeDamage(10);
                 myanimator.Play("HighHit");
+                PhotonAnimator.Play("HighHit");
             }
         }
     }
@@ -129,7 +126,7 @@ public class CharacterController : MonoBehaviour
     bool FacingRight()
     {
         float me = transform.position.x;
-        float them = Facing.position.x;
+        float them = Other.transform.position.x;
         float Check = me - them;
         if (Check < 0)
             return true;
@@ -138,14 +135,25 @@ public class CharacterController : MonoBehaviour
     }
     private void FixedUpdate()
     {
+        if (CanMove() == false) { return; }
         Walk();
+    }
+
+    public bool CanMove()
+    {
+        bool HasSpawned = (Other != null);
+        //Debug.Log(" Spawned: " + HasSpawned + " Spawned: " + WinController.instance.GameActive);
+        if (HasSpawned && WinController.instance.GameActive == true)
+        {
+            return true;
+        }
+        else
+            return false;
     }
     void Update()
     {
-        if (!isalive) { return; }
-        FacingLeftSave = FacingRight();
-        //if (FacingLeftSave != FacingLeft())
-        //DoubleClickControl.instance.DoubleClick = false;
+        if (CanMove() == false) { return; }
+        //Debug.Log("move");
         if (Input.GetKeyDown(KeyCode.A))
             TouchedA = true;
         else if (Input.GetKeyDown(KeyCode.D))
@@ -170,38 +178,56 @@ public class CharacterController : MonoBehaviour
     {
         int KeyX = (int)Keys.x;
         if (FacingRight() == false)
+        {
             myanimator.SetFloat("Move", -KeyX);
+            PhotonAnimator.SetFloat("Move", -KeyX);
+            
+        } 
         else
+        {
             myanimator.SetFloat("Move", KeyX);
+            PhotonAnimator.SetFloat("Move", KeyX);
+        }
 
         myanimator.SetBool("Grounded", Grounded());
+        PhotonAnimator.SetBool("Grounded", Grounded());
 
         if(Input.GetKeyDown(KeyCode.UpArrow) && AttacksActive() == false)
         {
             myanimator.SetTrigger("LightPunch");
+            PhotonAnimator.SetTrigger("LightPunch");
             myanimator.SetTrigger("Attack");
+            PhotonAnimator.SetTrigger("Attack");
         }
             
         if (Input.GetKeyDown(KeyCode.DownArrow) && AttacksActive() == false)
         {
             myanimator.SetTrigger("LightKick");
+            PhotonAnimator.SetTrigger("LightKick");
             myanimator.SetTrigger("Attack");
+            PhotonAnimator.SetTrigger("Attack");
         }
             
         if (Input.GetKeyDown(KeyCode.RightArrow) && AttacksActive() == false)
         {
-            myanimator.SetTrigger("HeavyPunch"); 
+            myanimator.SetTrigger("HeavyPunch");
+            PhotonAnimator.SetTrigger("HeavyPunch"); 
             myanimator.SetTrigger("Attack");
+            PhotonAnimator.SetTrigger("Attack");
         }
             
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             if (myanimator.GetBool("HeavyKick") == true || myanimator.GetCurrentAnimatorStateInfo(0).IsName("HeavyKick"))
-                myanimator.SetTrigger("HeavyKick2");
+            {
+                PhotonAnimator.SetTrigger("HeavyKick2");
+            }
             else if(AttacksActive() == false)
             {
                 myanimator.SetTrigger("HeavyKick");
+                PhotonAnimator.SetTrigger("HeavyKick");
                 myanimator.SetTrigger("Attack");
+                PhotonAnimator.SetTrigger("Attack");
             }
                 
         }
@@ -218,16 +244,19 @@ public class CharacterController : MonoBehaviour
         else
             Crouching = false;
         myanimator.SetBool("Crouch", Crouching);
+        PhotonAnimator.SetBool("Crouch", Crouching);
     }
     void Jump()
     {
         Jumping = true;
         myanimator.SetTrigger("IsJump");
+        PhotonAnimator.SetTrigger("IsJump");
         myyRigidbody.velocity += new Vector2(0f, jumpspeed);
     }
     void JumpLand()
     {
         myanimator.SetBool("Jump", false);
+        PhotonAnimator.SetBool("Jump", false);
         Jumping = false;
     }
     bool Grounded()
@@ -305,14 +334,10 @@ public class CharacterController : MonoBehaviour
             isalive = false;
             GetComponent<SpriteRenderer>().flipX = true;
             myanimator.SetTrigger("dying");
+            PhotonAnimator.SetTrigger("dying");
 
-            //GetComponent<CapsuleCollider2D>().transform.Rotate(0, 0, 90);
-            //myyRigidbody.bodyType = RigidbodyType2D.Kinematic;
             GetComponent<CapsuleCollider2D>().enabled = false;
             myyRigidbody.velocity = new Vector2(-6, 10f);
-
-            //triger off and box colider ofset change -0.12 if used as feet checker
-            //triger off and box colider ofset change -0.12 if used as feet checker
         }
     }
 }

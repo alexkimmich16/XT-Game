@@ -67,7 +67,7 @@ namespace Custom
         }
         public static int GetPlayerInt(string text, Player player)
         {
-            Debug.Log(text);
+            //Debug.Log(text);
             if (player.CustomProperties.TryGetValue(text, out object temp))
                 return (int)temp;
             else
@@ -152,7 +152,7 @@ namespace Custom
             Hashtable HealthHash = new Hashtable();
             HealthHash.Add(text, SetNum);
             player.SetCustomProperties(HealthHash);
-            Debug.Log(text);
+            //Debug.Log(text);
         }
         public static void SetGameInt(string text, int SetNum)
         {

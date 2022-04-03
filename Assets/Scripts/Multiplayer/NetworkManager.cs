@@ -1,5 +1,6 @@
 using UnityEngine;
 using Photon.Pun;
+using System.Collections.Generic;
 using Photon.Realtime;
 using static Custom.Cus;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
@@ -11,10 +12,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     #endregion
     public bool DebugScript = false;
-    //private bool Ac
+    private bool FirstRoomFrame = false;
+    private bool AlreadyInRoom = false;
+    public List<Transform> Spawns;
     void Start()
     {
-        //PhotonNetwork.OfflineMode = false;
         ConnectToServer();
     }
     void ConnectToServer()
@@ -31,7 +33,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             //Debug.Log("connected to server");
         base.OnConnectedToMaster();
         RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 10;
+        roomOptions.MaxPlayers = 2;
         roomOptions.IsVisible = true;
         roomOptions.IsOpen = true;
 
@@ -51,15 +53,75 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         if (DebugScript == true)
             Debug.Log("a new player joined");
+        
         base.OnPlayerEnteredRoom(newPlayer);
     }
 
     private void Update()
     {
-        if (PhotonNetwork.InRoom == true)
+        if (PhotonNetwork.PlayerList.Length == 1)
         {
+            WinController.instance.GameActive = false;
+            WinController.instance.HasStarted = false;
+        }
+        else
+        {
+            CharacterController.instance.Other = GetEnemyPlayer();
             HealthControl.instance.UpdateHealth();
         }
+        
+        if (FirstRoomFrame == true)
+        {
+            OnFirstMultiplayerFrame();
+            FirstRoomFrame = false;
+        }
+        
+        if (PhotonNetwork.InRoom == true && FirstRoomFrame == false && AlreadyInRoom == false)
+        {
+            FirstRoomFrame = true;
+            AlreadyInRoom = true;
+        }
+        
+        
+        if (FirstRoomFrame == true && AlreadyInRoom == false)
+        {
+            FirstRoomFrame = true;
+            AlreadyInRoom = false;
+        }
+    }
+    public void OnFirstMultiplayerFrame()
+    {
+        //Debug.Log("first");
+        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+        if (PhotonNetwork.PlayerList.Length == 1)
+        {
+            CharacterController.instance.transform.position = Spawns[0].position;
+        }
+            
+        else
+        {
+            CharacterController.instance.transform.position = Spawns[1].position;
+            //CharacterController.instance.Spawned.GetComponent<PhotonView>().RPC("SetObjective", RpcTarget.Others, CharacterController.instance.Spawned);
+            
+        }
+            
+        HealthControl.instance.UpdateHealth();
+        CharacterController.instance.Other = GetEnemyPlayer();
+    }
 
+    public GameObject GetEnemyPlayer()
+    {
+        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        //Debug.Log(Players.Length);
+        for (int i = 0; i < Players.Length; i++)
+        {
+            //Debug.Log("player1");
+            if (Players[i].GetComponent<PhotonView>().IsMine == false)
+            {
+                return Players[i];
+            }
+        }
+        
+        return null;
     }
 }

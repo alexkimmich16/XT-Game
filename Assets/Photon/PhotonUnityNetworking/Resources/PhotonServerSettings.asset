@@ -46,6 +46,8 @@ MonoBehaviour:
   - ResetPlayer
   - ReSpawn
   - FindSpotRPC
+  - SetPosition
+  - SetObjective
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Custom.Cus;
 using Photon.Pun;
+using TMPro;
 
 public class HealthControl : MonoBehaviour
 {
@@ -15,6 +16,19 @@ public class HealthControl : MonoBehaviour
     public Sprite Lose;
     public Sprite Empty;
 
+    public GameObject RestartButton;
+    public GameObject WaitingForPlayers;
+    public TextMeshProUGUI StartingIn;
+
+
+    [PunRPC]
+    void SetPosition(int Spawn)
+    {
+        transform.position = NetworkManager.instance.Spawns[Spawn].position;
+    }
+
+    
+
     public void UpdateHealth()
     {
         float PlayerHealthBar = (float)CharacterController.instance.CurrentHealth / (float)CharacterController.instance.MaxHealth;
@@ -22,8 +36,9 @@ public class HealthControl : MonoBehaviour
 
         if(PhotonNetwork.PlayerList.Length > 1)
         {
-            float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
-            Sides[1].SetFillSize(EnemyHealth);
+            int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
+            Sides[1].SetFillSize((float)EnemyHealth);
+            WinController.instance.TryOutCome(CharacterController.instance.CurrentHealth, EnemyHealth);
         }
         
     }
@@ -51,4 +66,9 @@ public class HealthControl : MonoBehaviour
     {
         UpdateHealth();
     }
+
+
+    //set objective to each other
+    //on one person leaving restart
+    //
 }

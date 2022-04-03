@@ -3,20 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
+public class MultiplayerSync : MonoBehaviour
 {
     public PhotonView photonView;
-    private Transform NetworkPlayer;
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        //if (stream.IsWriting)
-            //stream.SendNext(Health);
-        //else
-            //Health = (int)stream.ReceiveNext();
-    }
+    public Transform NetworkPlayer;
+    private float Size;
+    private float CheckView;
     private void Start()
     {
-        NetworkPlayer = GameObject.Find("MyCharacter").transform;
+        Size = transform.localScale.x;
+        NetworkPlayer = CharacterController.instance.transform;
         
     }
     void Update()
@@ -26,7 +22,26 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             //gameObject.SetActive(false);
             transform.position = NetworkPlayer.position;
         }
+        FaceDirection(FacingRight());
+    }
+    void FaceDirection(bool IsLeft)
+    {
+        if (IsLeft)
+            transform.localScale = new Vector2(Size, Size);
+        else
+            transform.localScale = new Vector2(-Size, Size);
+        //bool playerhorizatanlspeed = Mathf.Abs(myyRigidbody.velocity.x) > Mathf.Epsilon;
+    }
+    bool FacingRight()
+    {
+        float me = transform.position.x;
+        float them = CharacterController.instance.Spawned.transform.position.x;
+        float Check = me - them;
+        CheckView = Check;
+        if (Check < 0)
+            return true;
+        else
+            return false;
     }
 
-    
 }

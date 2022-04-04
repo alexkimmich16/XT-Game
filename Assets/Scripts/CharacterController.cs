@@ -50,7 +50,7 @@ public class CharacterController : MonoBehaviour
     public void SetSpawned(GameObject SpawnedOBJ)
     {
         Spawned = SpawnedOBJ;
-        Spawned.transform.GetChild(0).gameObject.SetActive(false);
+        //Spawned.transform.GetChild(0).gameObject.SetActive(false);
         PhotonAnimator = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
     public void Initialize(int Count)

@@ -113,6 +113,7 @@ MonoBehaviour:
   photonView: {fileID: 11122217497732252}
   NetworkPlayer: {fileID: 0}
   animator: {fileID: 0}
+  Move: 0
 --- !u!114 &5098135373442490509
 MonoBehaviour:
   m_ObjectHideFlags: 0

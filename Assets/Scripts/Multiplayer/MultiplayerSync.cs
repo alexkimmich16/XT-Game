@@ -11,7 +11,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks
     private float Size;
     private float CheckView;
     public Animator animator;
-
+    public int Move;
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
         if (stream.IsWriting)
@@ -19,6 +19,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks
             //This is our player, we need to send our actual position to network
 
             //Here we stream our animations to the network
+            
             stream.SendNext(animator.GetInteger("Move"));
             stream.SendNext(animator.GetBool("Grounded"));
             stream.SendNext(animator.GetBool("Crouch"));
@@ -35,6 +36,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks
         else
         {
             //Here we make sure other players receive the sent animations of my player, through the network.
+            
             animator.SetInteger("Move", (int)stream.ReceiveNext());
             animator.SetBool("Grounded", (bool)stream.ReceiveNext());
             animator.SetBool("Crouch", (bool)stream.ReceiveNext());
@@ -47,6 +49,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks
             animator.SetBool("HeavyKick2", (bool)stream.ReceiveNext());
             animator.SetBool("Attack", (bool)stream.ReceiveNext());
         }
+        Move = animator.GetInteger("Move");
     }
    
  

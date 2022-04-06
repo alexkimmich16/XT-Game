@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class MultiplayerSync : MonoBehaviourPunCallbacks
+public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
 {
     public PhotonView photonView;
     public Transform NetworkPlayer;
@@ -18,7 +18,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks
         {
             //This is our player, we need to send our actual position to network
 
-            //Here we stream our animations to the network
+            //Debug.Log("IsWriting" + Move);
             
             stream.SendNext(animator.GetInteger("Move"));
             stream.SendNext(animator.GetBool("Grounded"));

@@ -19,7 +19,7 @@ public class CharacterController : MonoBehaviour
     //[SerializeField] float JumpWaitTime = 2f;
     public Vector2 TrueSpeed;
     Rigidbody2D myyRigidbody;
-    Animator myanimator;
+    public Animator myanimator;
     Animator PhotonAnimator;
     CapsuleCollider2D mycapsuleCollider2D;
     bool isalive = true;

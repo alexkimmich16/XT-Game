@@ -11,7 +11,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
     private float CheckView;
     public Animator animator;
     public int Move;
-    /*
+    
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
@@ -20,10 +20,10 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
         if (stream.IsWriting)
         {
             //This is our player, we need to send our actual position to network
-            stream.SendNext(animator.GetFloat("Move"));
-            stream.SendNext(animator.GetBool("Grounded"));
-            stream.SendNext(animator.GetBool("Crouch"));
-            stream.SendNext(animator.GetBool("Jump"));
+           // stream.SendNext(animator.GetFloat("Move"));
+            //stream.SendNext(animator.GetBool("Grounded"));
+            //stream.SendNext(animator.GetBool("Crouch"));
+            //stream.SendNext(animator.GetBool("Jump"));
             stream.SendNext(animator.GetBool("IsJump"));
             stream.SendNext(animator.GetBool("LightPunch"));
             stream.SendNext(animator.GetBool("LightKick"));
@@ -36,11 +36,11 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
         else
         {
             //Here we make sure other players receive the sent animations of my player, through the network.
-            Debug.Log("IsWriting " + animator.GetInteger("Move"));
-            animator.SetFloat("Move", (float)stream.ReceiveNext());
-            animator.SetBool("Grounded", (bool)stream.ReceiveNext());
-            animator.SetBool("Crouch", (bool)stream.ReceiveNext());
-            animator.SetBool("Jump", (bool)stream.ReceiveNext());
+            //Debug.Log("IsWriting " + animator.GetInteger("Move"));
+            //animator.SetFloat("Move", (float)stream.ReceiveNext());
+            //animator.SetBool("Grounded", (bool)stream.ReceiveNext());
+            //animator.SetBool("Crouch", (bool)stream.ReceiveNext());
+            //animator.SetBool("Jump", (bool)stream.ReceiveNext());
             animator.SetBool("IsJump", (bool)stream.ReceiveNext());
             animator.SetBool("LightPunch", (bool)stream.ReceiveNext());
             animator.SetBool("LightKick", (bool)stream.ReceiveNext());
@@ -51,7 +51,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
         }
         
     }
-   */
+   
  
   
     private void Start()
@@ -67,8 +67,8 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
         //Debug.Log("IsWriting " + animator.GetBool("IsJump"));
         if (photonView.IsMine)
         {
-            //gameObject.SetActive(false);
-            transform.position = NetworkPlayer.position;
+            gameObject.SetActive(false);
+            //transform.position = NetworkPlayer.position;
         }
         FaceDirection(FacingRight());
     }

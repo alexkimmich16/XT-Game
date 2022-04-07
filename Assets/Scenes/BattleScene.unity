@@ -2958,6 +2958,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugScript: 1
+  ViewPlayer: 1
   Spawns:
   - {fileID: 1516538089}
   - {fileID: 274749216}
@@ -4036,6 +4037,7 @@ MonoBehaviour:
   StartSpeed: 3
   CapSpeed: 4.47
   TrueSpeed: {x: 0, y: 0}
+  myanimator: {fileID: 0}
   XDrag: 6.18
   Invincibility: 1.93
   CurrentHealth: 0

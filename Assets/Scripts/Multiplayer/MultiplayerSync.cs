@@ -17,11 +17,14 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
 
         //animator is just always bad animator
         //Animator anim = ;
+        Debug.Log("111");
         if(animator != null)
         {
+            Debug.Log("222");
             if (stream.IsWriting)
             {
                 //This is our player, we need to send our actual position to network
+                Debug.Log("333");
                 stream.SendNext(animator.GetBool("IsJump"));
                 stream.SendNext(animator.GetBool("LightPunch"));
                 stream.SendNext(animator.GetBool("LightKick"));
@@ -35,6 +38,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             {
                 //Here we make sure other players receive the sent animations of my player, through the network.
                 //Debug.Log("IsWriting " + animator.GetInteger("Move"));
+                Debug.Log("444");
                 animator.SetBool("IsJump", (bool)stream.ReceiveNext());
                 animator.SetBool("LightPunch", (bool)stream.ReceiveNext());
                 animator.SetBool("LightKick", (bool)stream.ReceiveNext());

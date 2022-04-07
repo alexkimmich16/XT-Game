@@ -119,7 +119,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
-            //Debug.Log("player1");
+            Debug.Log(Players.Length);
             if (Players[i].GetComponent<PhotonView>().IsMine == false)
             {
                 return Players[i];

@@ -52,9 +52,10 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     {
         Size = transform.localScale.x;
         NetworkPlayer = CharacterController.instance.transform;
-        if (NetworkManager.instance.ViewPlayer == false)
-            animator = transform.GetChild(0).GetComponent<Animator>();
-        animator = CharacterController.instance.myanimator;
+        animator = transform.GetChild(0).GetComponent<Animator>();
+        //if (NetworkManager.instance.ViewPlayer == false)
+            
+        //animator = CharacterController.instance.myanimator;
     }
     void Update()
     {
@@ -62,6 +63,10 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
         {
             //gameObject.SetActive(false);
             transform.position = NetworkPlayer.position;
+        }
+        else
+        {
+
         }
         FaceDirection(FacingRight());
     }

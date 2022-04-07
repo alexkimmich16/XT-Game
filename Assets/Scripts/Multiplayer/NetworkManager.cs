@@ -90,11 +90,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             AlreadyInRoom = false;
         }
 
-        CharacterController.instance.Other = GetEnemyPlayer();
+        
     }
     public void OnFirstMultiplayerFrame()
     {
-        //Debug.Log("first");
+        CharacterController.instance.Other = GetEnemyPlayer();
         SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
         if (PhotonNetwork.PlayerList.Length == 1)
         {

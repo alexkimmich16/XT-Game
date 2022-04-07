@@ -89,6 +89,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             FirstRoomFrame = true;
             AlreadyInRoom = false;
         }
+
+        CharacterController.instance.Other = GetEnemyPlayer();
     }
     public void OnFirstMultiplayerFrame()
     {
@@ -107,7 +109,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
             
         HealthControl.instance.UpdateHealth();
-        CharacterController.instance.Other = GetEnemyPlayer();
+        //CharacterController.instance.Other = GetEnemyPlayer();
     }
 
     public GameObject GetEnemyPlayer()

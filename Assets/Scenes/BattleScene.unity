@@ -2958,7 +2958,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   DebugScript: 1
-  ViewPlayer: 1
+  ViewPlayer: 0
   Spawns:
   - {fileID: 1516538089}
   - {fileID: 274749216}

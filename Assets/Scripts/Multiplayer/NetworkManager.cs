@@ -67,7 +67,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
         else
         {
-            CharacterController.instance.Other = GetEnemyPlayer();
+            //CharacterController.instance.Other = GetEnemyPlayer();
             HealthControl.instance.UpdateHealth();
         }
         

@@ -58,8 +58,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     }
     void Update()
     {
-        //Debug.Log("IsWriting " + (int)animator.GetFloat("Move"));
-        //Debug.Log("IsWriting " + animator.GetBool("IsJump"));
         if (photonView.IsMine)
         {
             //gameObject.SetActive(false);

@@ -17,31 +17,33 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
 
         //animator is just always bad animator
         //Animator anim = ;
-        if (stream.IsWriting)
+        if(animator != null)
         {
-            //This is our player, we need to send our actual position to network
-            stream.SendNext(animator.GetBool("IsJump"));
-            stream.SendNext(animator.GetBool("LightPunch"));
-            stream.SendNext(animator.GetBool("LightKick"));
-            stream.SendNext(animator.GetBool("HeavyPunch"));
-            stream.SendNext(animator.GetBool("HeavyKick"));
-            stream.SendNext(animator.GetBool("HeavyKick2"));
-            stream.SendNext(animator.GetBool("Attack"));
+            if (stream.IsWriting)
+            {
+                //This is our player, we need to send our actual position to network
+                stream.SendNext(animator.GetBool("IsJump"));
+                stream.SendNext(animator.GetBool("LightPunch"));
+                stream.SendNext(animator.GetBool("LightKick"));
+                stream.SendNext(animator.GetBool("HeavyPunch"));
+                stream.SendNext(animator.GetBool("HeavyKick"));
+                stream.SendNext(animator.GetBool("HeavyKick2"));
+                stream.SendNext(animator.GetBool("Attack"));
 
+            }
+            else
+            {
+                //Here we make sure other players receive the sent animations of my player, through the network.
+                //Debug.Log("IsWriting " + animator.GetInteger("Move"));
+                animator.SetBool("IsJump", (bool)stream.ReceiveNext());
+                animator.SetBool("LightPunch", (bool)stream.ReceiveNext());
+                animator.SetBool("LightKick", (bool)stream.ReceiveNext());
+                animator.SetBool("HeavyPunch", (bool)stream.ReceiveNext());
+                animator.SetBool("HeavyKick", (bool)stream.ReceiveNext());
+                animator.SetBool("HeavyKick2", (bool)stream.ReceiveNext());
+                animator.SetBool("Attack", (bool)stream.ReceiveNext());
+            }
         }
-        else
-        {
-            //Here we make sure other players receive the sent animations of my player, through the network.
-            //Debug.Log("IsWriting " + animator.GetInteger("Move"));
-            animator.SetBool("IsJump", (bool)stream.ReceiveNext());
-            animator.SetBool("LightPunch", (bool)stream.ReceiveNext());
-            animator.SetBool("LightKick", (bool)stream.ReceiveNext());
-            animator.SetBool("HeavyPunch", (bool)stream.ReceiveNext());
-            animator.SetBool("HeavyKick", (bool)stream.ReceiveNext());
-            animator.SetBool("HeavyKick2", (bool)stream.ReceiveNext());
-            animator.SetBool("Attack", (bool)stream.ReceiveNext());
-        }
-        
     }
    
  

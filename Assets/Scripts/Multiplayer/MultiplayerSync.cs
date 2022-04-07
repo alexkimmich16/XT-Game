@@ -52,7 +52,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
         NetworkPlayer = CharacterController.instance.transform;
         if (NetworkManager.instance.ViewPlayer == false)
             animator = transform.GetChild(0).GetComponent<Animator>();
-        //animator = CharacterController.instance.myanimator;
+        animator = CharacterController.instance.myanimator;
     }
     void Update()
     {

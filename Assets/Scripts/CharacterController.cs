@@ -46,7 +46,10 @@ public class CharacterController : MonoBehaviour
 
     public GameObject Spawned;
     public GameObject Other;
-
+    public void SetOther(GameObject other)
+    {
+        Other = other;
+    }
     public void SetSpawned(GameObject SpawnedOBJ)
     {
         Spawned = SpawnedOBJ;

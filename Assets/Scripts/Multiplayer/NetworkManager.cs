@@ -60,6 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
+        
         if (PhotonNetwork.PlayerList.Length == 1)
         {
             WinController.instance.GameActive = false;
@@ -94,7 +95,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public void OnFirstMultiplayerFrame()
     {
-        CharacterController.instance.Other = GetEnemyPlayer();
+        CharacterController.instance.SetOther(GetEnemyPlayer());
         SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
         if (PhotonNetwork.PlayerList.Length == 1)
         {

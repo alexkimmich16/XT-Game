@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
+public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Transform NetworkPlayer;
     private float Size;

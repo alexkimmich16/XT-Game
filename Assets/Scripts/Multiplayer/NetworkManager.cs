@@ -14,6 +14,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public bool DebugScript = false;
     private bool FirstRoomFrame = false;
     private bool AlreadyInRoom = false;
+    public bool ViewPlayer;
     public List<Transform> Spawns;
     void Start()
     {

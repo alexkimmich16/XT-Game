@@ -50,7 +50,9 @@ public class CharacterController : MonoBehaviour
     public void SetSpawned(GameObject SpawnedOBJ)
     {
         Spawned = SpawnedOBJ;
-        Spawned.transform.GetChild(0).gameObject.SetActive(false);
+        if (NetworkManager.instance.ViewPlayer == false)
+            Spawned.transform.GetChild(0).gameObject.SetActive(false);
+
         PhotonAnimator = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
     public void Initialize(int Count)
@@ -71,7 +73,6 @@ public class CharacterController : MonoBehaviour
         {
             if (collision.transform.tag == "MidHit")
             {
-                
                 myanimator.Play("MidHit");
                 PhotonAnimator.Play("MidHit");
                 TakeDamage(10);
@@ -136,6 +137,7 @@ public class CharacterController : MonoBehaviour
     private void FixedUpdate()
     {
         if (CanMove() == false) { return; }
+
         Walk();
     }
 
@@ -144,9 +146,7 @@ public class CharacterController : MonoBehaviour
         bool HasSpawned = (Other != null);
         //Debug.Log(" Spawned: " + HasSpawned + " Spawned: " + WinController.instance.GameActive);
         if (HasSpawned && WinController.instance.GameActive == true)
-        {
             return true;
-        }
         else
             return false;
     }
@@ -181,7 +181,6 @@ public class CharacterController : MonoBehaviour
         {
             myanimator.SetFloat("Move", -KeyX);
             PhotonAnimator.SetFloat("Move", -KeyX);
-            
         } 
         else
         {

@@ -19,7 +19,17 @@ public class HealthControl : MonoBehaviour
     public GameObject RestartButton;
     public GameObject WaitingForPlayers;
     public TextMeshProUGUI StartingIn;
-
+    [System.Serializable]
+    public class Side
+    {
+        public List<GameObject> Dots;
+        public Image Fill;
+        public Image Icon;
+        public void SetFillSize(float Set)
+        {
+            Fill.fillAmount = Set;
+        }
+    }
 
     [PunRPC]
     void SetPosition(int Spawn)
@@ -42,17 +52,7 @@ public class HealthControl : MonoBehaviour
         }
         
     }
-    [System.Serializable]
-    public class Side
-    {
-        public List<GameObject> Dots;
-        public Image Fill;
-        public Image Icon;
-        public void SetFillSize(float Set)
-        {
-            Fill.fillAmount = Set;
-        }
-    }
+    
     public void DisplayWin(int Side)
     {
         for(int i = 0; i > Sides[Side].Dots.Count; i++)

@@ -68,7 +68,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks //, IPunObservable
         if (photonView.IsMine)
         {
             gameObject.SetActive(false);
-            //transform.position = NetworkPlayer.position;
+            transform.position = NetworkPlayer.position;
         }
         FaceDirection(FacingRight());
     }

@@ -91,8 +91,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             FirstRoomFrame = true;
             AlreadyInRoom = false;
         }
-
-        
     }
     public void OnFirstMultiplayerFrame()
     {
@@ -107,11 +105,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         {
             CharacterController.instance.transform.position = Spawns[1].position;
             //CharacterController.instance.Spawned.GetComponent<PhotonView>().RPC("SetObjective", RpcTarget.Others, CharacterController.instance.Spawned);
-            
         }
             
         HealthControl.instance.UpdateHealth();
-        //CharacterController.instance.Other = GetEnemyPlayer();
+        if(GetPlayer() != null)
+        {
+
+        }
+        GetPlayer().transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
     }
 
     public GameObject GetEnemyPlayer()
@@ -127,6 +128,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             }
         }
         
+        return null;
+    }
+    public GameObject GetPlayer()
+    {
+        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        //Debug.Log(Players.Length);
+        for (int i = 0; i < Players.Length; i++)
+        {
+            Debug.Log(Players.Length);
+            if (Players[i].GetComponent<PhotonView>().IsMine == true)
+            {
+                return Players[i];
+            }
+        }
+
         return null;
     }
 }

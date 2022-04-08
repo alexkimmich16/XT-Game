@@ -3842,53 +3842,6 @@ Transform:
   m_Father: {fileID: 1964290411}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &5739429156578297872
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5739429156578297873}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 5739429156980127092}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5739429156578297873
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5739429156578297872}
-  - component: {fileID: 5739429156578297875}
-  m_Layer: 9
-  m_Name: MidHit
-  m_TagString: MidHit
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!58 &5739429156578297875
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5739429156578297873}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 1.08, y: 0}
-  serializedVersion: 2
-  m_Radius: 2.24
 --- !u!95 &5739429156980127048
 Animator:
   serializedVersion: 3
@@ -3992,7 +3945,6 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 5739429157648388553}
-  - {fileID: 5739429156578297872}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4037,13 +3989,13 @@ MonoBehaviour:
   StartSpeed: 3
   CapSpeed: 4.47
   TrueSpeed: {x: 0, y: 0}
-  myanimator: {fileID: 0}
   XDrag: 6.18
   Invincibility: 1.93
   CurrentHealth: 0
   MaxHealth: 120
   Spawned: {fileID: 0}
   Other: {fileID: 0}
+  anims: []
 --- !u!70 &5739429156980127095
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -4100,10 +4052,25 @@ GameObject:
   m_Component:
   - component: {fileID: 5739429157648388553}
   - component: {fileID: 5739429157648388552}
+  - component: {fileID: 5739429157648388599}
   m_Layer: 9
-  m_Name: HighHit
-  m_TagString: HighHit
+  m_Name: HitBox
+  m_TagString: Hitbox
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &5739429157648388599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5739429157648388598}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65bb44d926635a64b81f754726bccc4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  Damage: 0

@@ -9,6 +9,12 @@ namespace Custom
 {
     public static class Cus
     {
+        public class DamageInfo
+        {
+            public AttackType HitType;
+            public int Damage;
+        }
+
         public static string PlayerTeam = "Team";
         public static string PlayerHealth = "Health";
 

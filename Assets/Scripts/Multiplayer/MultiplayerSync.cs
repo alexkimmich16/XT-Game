@@ -68,10 +68,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             //gameObject.SetActive(false);
             transform.position = NetworkPlayer.position;
         }
-        else
-        {
-
-        }
         FaceDirection(FacingRight());
     }
     void FaceDirection(bool IsLeft)

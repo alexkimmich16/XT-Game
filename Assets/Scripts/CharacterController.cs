@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using static Custom.Cus;
 using Photon.Pun;
+using System.Collections.Generic;
 
 public class CharacterController : MonoBehaviour
 {
@@ -19,8 +20,6 @@ public class CharacterController : MonoBehaviour
     //[SerializeField] float JumpWaitTime = 2f;
     public Vector2 TrueSpeed;
     Rigidbody2D myyRigidbody;
-    public Animator myanimator;
-    Animator PhotonAnimator;
     CapsuleCollider2D mycapsuleCollider2D;
     bool isalive = true;
     //public Transform Facing;
@@ -46,6 +45,8 @@ public class CharacterController : MonoBehaviour
 
     public GameObject Spawned;
     public GameObject Other;
+
+    public List<Animator> anims;
     public void SetOther(GameObject other)
     {
         Other = other;
@@ -56,15 +57,24 @@ public class CharacterController : MonoBehaviour
         if (NetworkManager.instance.ViewPlayer == false)
             Spawned.transform.GetChild(0).gameObject.SetActive(false);
 
-        PhotonAnimator = Spawned.transform.GetChild(0).GetComponent<Animator>();
+        anims[1] = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
     public void Initialize(int Count)
     {
 
     }
-    public void TakeDamage(int Take)
+    public void TakeDamage(DamageInfo DamageStat)
     {
-        CurrentHealth -= Take;
+        string anim = "";
+        if (DamageStat.HitType == AttackType.Low)
+            anim = "MidHit";
+        else if (DamageStat.HitType == AttackType.High)
+            anim = "HighHit";
+
+        foreach (Animator A in anims)
+            A.Play(anim);
+
+        CurrentHealth -= DamageStat.Damage;
         SetPlayerInt(PlayerHealth, CurrentHealth, PhotonNetwork.LocalPlayer);
         HealthControl.instance.UpdateHealth();
         if (CurrentHealth < 0)
@@ -72,22 +82,15 @@ public class CharacterController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (CanTakeDamage == true)
+        //foreach (Animator A in anims)
+        if (CanTakeDamage == true && collision.transform.GetComponent<HitBoxControl>())
         {
-            if (collision.transform.tag == "MidHit")
-            {
-                myanimator.Play("MidHit");
-                PhotonAnimator.Play("MidHit");
-                TakeDamage(10);
-                StartCoroutine(InvincibilityWait());
-            }
-            else if (collision.transform.tag == "HighHit")
-            {
-                StartCoroutine(InvincibilityWait());
-                TakeDamage(10);
-                myanimator.Play("HighHit");
-                PhotonAnimator.Play("HighHit");
-            }
+            HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
+            DamageInfo DamageStat = new DamageInfo();
+            DamageStat.HitType = control.type;
+            DamageStat.Damage = control.Damage;
+            TakeDamage(DamageStat);
+            StartCoroutine(InvincibilityWait());
         }
     }
     IEnumerator InvincibilityWait()
@@ -100,7 +103,8 @@ public class CharacterController : MonoBehaviour
     {
         Size = transform.localScale.x;
         myyRigidbody = GetComponent<Rigidbody2D>();
-        myanimator = GetComponent<Animator>();
+        anims.Add(GetComponent<Animator>());
+        anims.Add(null);
         mycapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         CurrentHealth = MaxHealth;
     }
@@ -172,7 +176,7 @@ public class CharacterController : MonoBehaviour
     }
     public bool AttacksActive()
     {
-        if (myanimator.GetBool("LightPunch") == true || myanimator.GetBool("LightKick") == true || myanimator.GetBool("HeavyPunch") == true || myanimator.GetBool("HeavyKick") == true)
+        if (anims[0].GetBool("LightPunch") == true || anims[0].GetBool("LightKick") == true || anims[0].GetBool("HeavyPunch") == true || anims[0].GetBool("HeavyKick") == true)
             return true;
         else
             return false;
@@ -182,54 +186,58 @@ public class CharacterController : MonoBehaviour
         int KeyX = (int)Keys.x;
         if (FacingRight() == false)
         {
-            myanimator.SetFloat("Move", -KeyX);
-            PhotonAnimator.SetFloat("Move", -KeyX);
+            foreach (Animator A in anims)
+                A.SetFloat("Move", -KeyX);
         } 
         else
         {
-            myanimator.SetFloat("Move", KeyX);
-            PhotonAnimator.SetFloat("Move", KeyX);
+            foreach (Animator A in anims)
+                A.SetFloat("Move", KeyX);
         }
-
-        myanimator.SetBool("Grounded", Grounded());
-        PhotonAnimator.SetBool("Grounded", Grounded());
+        foreach (Animator A in anims)
+            A.SetBool("Grounded", Grounded());
 
         if(Input.GetKeyDown(KeyCode.UpArrow) && AttacksActive() == false)
         {
-            myanimator.SetTrigger("LightPunch");
-            PhotonAnimator.SetTrigger("LightPunch");
-            myanimator.SetTrigger("Attack");
-            PhotonAnimator.SetTrigger("Attack");
+            foreach (Animator A in anims)
+            {
+                A.SetTrigger("LightPunch");
+                A.SetTrigger("Attack");
+            }
         }
             
         if (Input.GetKeyDown(KeyCode.DownArrow) && AttacksActive() == false)
         {
-            myanimator.SetTrigger("LightKick");
-            PhotonAnimator.SetTrigger("LightKick");
-            myanimator.SetTrigger("Attack");
-            PhotonAnimator.SetTrigger("Attack");
+            foreach (Animator A in anims)
+            {
+                A.SetTrigger("LightKick");
+                A.SetTrigger("Attack");
+            }
         }
             
         if (Input.GetKeyDown(KeyCode.RightArrow) && AttacksActive() == false)
         {
-            myanimator.SetTrigger("HeavyPunch");
-            PhotonAnimator.SetTrigger("HeavyPunch"); 
-            myanimator.SetTrigger("Attack");
-            PhotonAnimator.SetTrigger("Attack");
+            foreach (Animator A in anims)
+            {
+                A.SetTrigger("HeavyPunch");
+                A.SetTrigger("Attack");
+            }
         }
             
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            if (myanimator.GetBool("HeavyKick") == true || myanimator.GetCurrentAnimatorStateInfo(0).IsName("HeavyKick"))
+            if (anims[0].GetBool("HeavyKick") == true || anims[0].GetCurrentAnimatorStateInfo(0).IsName("HeavyKick"))
             {
-                PhotonAnimator.SetTrigger("HeavyKick2");
+                foreach (Animator A in anims)
+                    A.SetTrigger("HeavyKick2");
             }
             else if(AttacksActive() == false)
             {
-                myanimator.SetTrigger("HeavyKick");
-                PhotonAnimator.SetTrigger("HeavyKick");
-                myanimator.SetTrigger("Attack");
-                PhotonAnimator.SetTrigger("Attack");
+                foreach (Animator A in anims)
+                {
+                    A.SetTrigger("HeavyKick");
+                    A.SetTrigger("Attack");
+                }
             }
                 
         }
@@ -245,20 +253,20 @@ public class CharacterController : MonoBehaviour
             Crouching = true;
         else
             Crouching = false;
-        myanimator.SetBool("Crouch", Crouching);
-        PhotonAnimator.SetBool("Crouch", Crouching);
+        foreach (Animator A in anims)
+            A.SetBool("Crouch", Crouching);
     }
     void Jump()
     {
         Jumping = true;
-        myanimator.SetTrigger("IsJump");
-        PhotonAnimator.SetTrigger("IsJump");
+        foreach (Animator A in anims)
+            A.SetTrigger("IsJump");
         myyRigidbody.velocity += new Vector2(0f, jumpspeed);
     }
     void JumpLand()
     {
-        myanimator.SetBool("Jump", false);
-        PhotonAnimator.SetBool("Jump", false);
+        foreach (Animator A in anims)
+            A.SetBool("Jump", false);
         Jumping = false;
     }
     bool Grounded()
@@ -335,8 +343,8 @@ public class CharacterController : MonoBehaviour
         {
             isalive = false;
             GetComponent<SpriteRenderer>().flipX = true;
-            myanimator.SetTrigger("dying");
-            PhotonAnimator.SetTrigger("dying");
+            foreach (Animator A in anims)
+                A.SetTrigger("dying");
 
             GetComponent<CapsuleCollider2D>().enabled = false;
             myyRigidbody.velocity = new Vector2(-6, 10f);

@@ -47,7 +47,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
         //SetPlayerInt(PlayerHealth, );
 
-        CharacterController.instance.Initialize(PhotonNetwork.PlayerList.Length - 1);
+        //CharacterController.instance.Initialize(PhotonNetwork.PlayerList.Length - 1);
         base.OnJoinedRoom();
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -121,7 +121,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
-            Debug.Log(Players.Length);
+            //Debug.Log(Players.Length);
             if (Players[i].GetComponent<PhotonView>().IsMine == false)
             {
                 return Players[i];
@@ -136,7 +136,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
-            Debug.Log(Players.Length);
+            //Debug.Log(Players.Length);
             if (Players[i].GetComponent<PhotonView>().IsMine == true)
             {
                 return Players[i];

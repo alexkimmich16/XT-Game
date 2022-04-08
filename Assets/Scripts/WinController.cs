@@ -45,7 +45,7 @@ public class WinController : MonoBehaviour
         GameActive = true;
         CountingDown = false;
     }
-    public void TryOutCome(int MyHealth, int OtherHealth)
+    public void TryOutCome(int MyHealth, float OtherHealth)
     {
         if(MyHealth < 0)
         {
@@ -70,8 +70,8 @@ public class WinController : MonoBehaviour
         if (PhotonNetwork.PlayerList.Length > 1)
         {
             //normal restart
-            SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[0]);
-            SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[1]);
+            //SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[0]);
+            //SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[1]);
             CharacterController.instance.transform.position = NetworkManager.instance.Spawns[0].position;
             gameObject.GetComponent<PhotonView>().RPC("SetPosition", RpcTarget.Others, 1);
         }

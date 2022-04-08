@@ -46,7 +46,8 @@ public class HealthControl : MonoBehaviour
 
         if(PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
         {
-            int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
+            float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
+            Debug.Log("OtherHealth: " + EnemyHealth);
             Sides[1].SetFillSize((float)EnemyHealth);
             WinController.instance.TryOutCome(CharacterController.instance.CurrentHealth, EnemyHealth);
         }

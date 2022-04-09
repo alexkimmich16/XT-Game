@@ -84,7 +84,7 @@ public class CharacterController : MonoBehaviour
     {
         bool HitBox = collision.transform.GetComponent<HitBoxControl>();
         Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox);
-        if (CanTakeDamage == true && collision.transform.GetComponent<HitBoxControl>() && transform.GetComponent<PhotonView>().IsMine == true)
+        if (CanTakeDamage == true && collision.transform.GetComponent<HitBoxControl>() && collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == true)
         {
             Debug.Log("hit");
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();

@@ -82,9 +82,10 @@ public class CharacterController : MonoBehaviour
     }
     private void OnTriggerStay2D(Collider2D collision)
     {
-        //foreach (Animator A in anims)
+        Debug.Log("trigger");
         if (CanTakeDamage == true && collision.transform.GetComponent<HitBoxControl>())
         {
+            Debug.Log("hit");
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
             DamageInfo DamageStat = new DamageInfo();
             DamageStat.HitType = control.type;
@@ -166,6 +167,7 @@ public class CharacterController : MonoBehaviour
             tmp.a = 1f;
         else
             tmp.a = 0.5f;
+
         GetComponent<SpriteRenderer>().color = tmp;
         if (Input.GetKeyDown(KeyCode.A))
             TouchedA = true;

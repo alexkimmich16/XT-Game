@@ -37,8 +37,6 @@ public class HealthControl : MonoBehaviour
         transform.position = NetworkManager.instance.Spawns[Spawn].position;
     }
 
-    
-
     public void UpdateHealth()
     {
         float PlayerHealthBar = (float)CharacterController.instance.CurrentHealth / (float)CharacterController.instance.MaxHealth;

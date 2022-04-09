@@ -61,7 +61,6 @@ public class WinController : MonoBehaviour
         }
 
     }
-
     public void Restart()
     {
         GameActive = false;

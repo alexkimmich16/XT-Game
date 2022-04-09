@@ -15,8 +15,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
 
-        //animator is just always bad animator
-        //Animator anim = ;
         //Debug.Log("111");
         if(animator != null)
         {
@@ -24,7 +22,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             if (stream.IsWriting)
             {
                 //This is our player, we need to send our actual position to network
-                //Debug.Log("333");
                 stream.SendNext(animator.GetBool("IsJump"));
                 stream.SendNext(animator.GetBool("LightPunch"));
                 stream.SendNext(animator.GetBool("LightKick"));
@@ -37,8 +34,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             else
             {
                 //Here we make sure other players receive the sent animations of my player, through the network.
-                //Debug.Log("IsWriting " + animator.GetInteger("Move"));
-                //Debug.Log("444");
                 animator.SetBool("IsJump", (bool)stream.ReceiveNext());
                 animator.SetBool("LightPunch", (bool)stream.ReceiveNext());
                 animator.SetBool("LightKick", (bool)stream.ReceiveNext());
@@ -57,15 +52,11 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
         Size = transform.localScale.x;
         NetworkPlayer = CharacterController.instance.transform;
         animator = transform.GetChild(0).GetComponent<Animator>();
-        //if (NetworkManager.instance.ViewPlayer == false)
-            
-        //animator = CharacterController.instance.myanimator;
     }
     void Update()
     {
         if (photonView.IsMine)
         {
-            //gameObject.SetActive(false);
             transform.position = NetworkPlayer.position;
         }
         FaceDirection(FacingRight());

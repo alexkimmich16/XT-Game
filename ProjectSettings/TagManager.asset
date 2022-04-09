@@ -8,6 +8,7 @@ TagManager:
   - HighHit
   - MidHit
   - Hitbox
+  - TruePlayer
   layers:
   - Default
   - TransparentFX

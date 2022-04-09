@@ -59,10 +59,6 @@ public class CharacterController : MonoBehaviour
 
         anims[1] = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
-    public void Initialize(int Count)
-    {
-
-    }
     public void TakeDamage(DamageInfo DamageStat)
     {
         string anim = "";
@@ -149,7 +145,6 @@ public class CharacterController : MonoBehaviour
 
         Walk();
     }
-
     public bool CanMove()
     {
         bool HasSpawned = (Other != null);

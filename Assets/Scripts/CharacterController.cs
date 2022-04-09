@@ -80,7 +80,7 @@ public class CharacterController : MonoBehaviour
         if (CurrentHealth < 0)
             Die();
     }
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         bool HitBox = collision.transform.GetComponent<HitBoxControl>();
         Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox);

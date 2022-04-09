@@ -160,7 +160,13 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         if (CanMove() == false) { return; }
-        //Debug.Log("move");
+
+        Color tmp = GetComponent<SpriteRenderer>().color;
+        if (CanTakeDamage == true)
+            tmp.a = 1f;
+        else
+            tmp.a = 0.5f;
+        GetComponent<SpriteRenderer>().color = tmp;
         if (Input.GetKeyDown(KeyCode.A))
             TouchedA = true;
         else if (Input.GetKeyDown(KeyCode.D))

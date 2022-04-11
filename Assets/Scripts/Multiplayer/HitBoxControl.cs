@@ -12,7 +12,7 @@ public class HitBoxControl : MonoBehaviour
     public AttackType type;
     public int Damage;
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         Debug.Log("TriggerHitbox: " + collision.transform.name);
 

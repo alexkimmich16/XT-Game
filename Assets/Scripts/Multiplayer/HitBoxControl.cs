@@ -14,7 +14,7 @@ public class HitBoxControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("TriggerHitbox: " + collision.transform.tag);
+        Debug.Log("TriggerHitbox: " + collision.transform.name);
 
         if (collision.transform.tag == "Player")
         {

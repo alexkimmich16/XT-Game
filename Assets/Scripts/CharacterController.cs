@@ -61,6 +61,7 @@ public class CharacterController : MonoBehaviour
     }
     public void TakeDamage(DamageInfo DamageStat)
     {
+        Debug.Log("takedamage");
         string anim = "";
         if (DamageStat.HitType == AttackType.Low)
             anim = "MidHit";

@@ -14,8 +14,8 @@ public class HitBoxControl : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("TriggerHitbox");
-        if (collision.transform.tag == "TruePlayer")
+        //Debug.Log("TriggerHitbox");
+        if (collision.transform.tag == "Player")
         {
             DamageInfo DamageStat = new DamageInfo();
             DamageStat.HitType = type;

@@ -66,7 +66,7 @@ public class CharacterController : MonoBehaviour
             anim = "MidHit";
         else if (DamageStat.HitType == AttackType.High)
             anim = "HighHit";
-
+        Debug.Log("TakeDamage");
         foreach (Animator A in anims)
             A.Play(anim);
 

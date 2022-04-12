@@ -47,18 +47,22 @@ public class WinController : MonoBehaviour
     }
     public void TryOutCome(int MyHealth, float OtherHealth)
     {
-        if(MyHealth < 0)
+        if(MyHealth < 0 || OtherHealth < 0)
         {
-            //i lose
             GameActive = false;
             HealthControl.instance.RestartButton.SetActive(true);
+            if (MyHealth < 0)
+            {
+                HealthControl.instance.Result.text = "You Lose Dumbass!";
+                HealthControl.instance.Result.gameObject.SetActive(true);
+            }
+            else if (OtherHealth < 0)
+            {
+                HealthControl.instance.Result.gameObject.SetActive(true);
+                HealthControl.instance.Result.text = "You Win!";
+            }
         }
-        else if(OtherHealth < 0)
-        {
-            //i win
-            GameActive = false;
-            HealthControl.instance.RestartButton.SetActive(true);
-        }
+        
 
     }
     public void Restart()
@@ -66,6 +70,7 @@ public class WinController : MonoBehaviour
         GameActive = false;
         HasStarted = false;
         HealthControl.instance.RestartButton.SetActive(false);
+        HealthControl.instance.Result.gameObject.SetActive(false);
         if (PhotonNetwork.PlayerList.Length > 1)
         {
             //normal restart

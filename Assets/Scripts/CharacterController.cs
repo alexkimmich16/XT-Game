@@ -45,7 +45,12 @@ public class CharacterController : MonoBehaviour
 
     public GameObject Spawned;
     public GameObject Other;
-
+    public void Reset()
+    {
+        //max health
+        //reset position based on player num
+        //
+    }
     public List<Animator> anims;
     public void SetOther(GameObject other)
     {
@@ -107,54 +112,14 @@ public class CharacterController : MonoBehaviour
         mycapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         CurrentHealth = MaxHealth;
     }
-    Vector2 GetInput()
-    {
-        Vector2 input = Vector2.zero;
-        if (Input.GetKey(KeyCode.A))
-        {
-            input.x = -1;
-            if (DoubleClickControl.instance.LeftDoubleClick == true && FacingRight() == false)
-                input.x = -2;
-        }
-            
-        if (Input.GetKey(KeyCode.D))
-        {
-            input.x = 1;
-            if (DoubleClickControl.instance.RightDoubleClick == true && FacingRight() == true)
-                input.x = 2;
-        }
-            
-        if (Input.GetKey(KeyCode.S))
-            input.y = -1;
-        if (Input.GetKey(KeyCode.W))
-            input.y = 1;
-         return input;
-    }
-    bool FacingRight()
-    {
-        float me = transform.position.x;
-        float them = Other.transform.position.x;
-        float Check = me - them;
-        if (Check < 0)
-            return true;
-        else
-            return false;
-    }
+    
     private void FixedUpdate()
     {
         if (CanMove() == false) { return; }
 
         Walk();
     }
-    public bool CanMove()
-    {
-        bool HasSpawned = (Other != null);
-        //Debug.Log(" Spawned: " + HasSpawned + " Spawned: " + WinController.instance.GameActive);
-        if (HasSpawned && WinController.instance.GameActive == true)
-            return true;
-        else
-            return false;
-    }
+    
     void Update()
     {
         if (CanMove() == false) { return; }
@@ -179,13 +144,7 @@ public class CharacterController : MonoBehaviour
         if (DetectingJumpLand = true && Grounded() == true && Jumping == true)
             JumpLand();
     }
-    public bool AttacksActive()
-    {
-        if (anims[0].GetBool("LightPunch") == true || anims[0].GetBool("LightKick") == true || anims[0].GetBool("HeavyPunch") == true || anims[0].GetBool("HeavyKick") == true)
-            return true;
-        else
-            return false;
-    }
+    
     void ConvertToAnimation(Vector2 Keys)
     {
         int KeyX = (int)Keys.x;
@@ -274,13 +233,7 @@ public class CharacterController : MonoBehaviour
             A.SetBool("Jump", false);
         Jumping = false;
     }
-    bool Grounded()
-    {
-        if (mycapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")) && myyRigidbody.velocity.y < 0.01f)
-            return true;
-        else
-            return false;
-    }
+    
     void Walk()
     {
         TrueSpeed = myyRigidbody.velocity;
@@ -355,4 +308,64 @@ public class CharacterController : MonoBehaviour
             myyRigidbody.velocity = new Vector2(-6, 10f);
         }
     }
+
+    #region Methods
+    bool Grounded()
+    {
+        if (mycapsuleCollider2D.IsTouchingLayers(LayerMask.GetMask("Ground")) && myyRigidbody.velocity.y < 0.01f)
+            return true;
+        else
+            return false;
+    }
+
+    Vector2 GetInput()
+    {
+        Vector2 input = Vector2.zero;
+        if (Input.GetKey(KeyCode.A))
+        {
+            input.x = -1;
+            if (DoubleClickControl.instance.LeftDoubleClick == true && FacingRight() == false)
+                input.x = -2;
+        }
+
+        if (Input.GetKey(KeyCode.D))
+        {
+            input.x = 1;
+            if (DoubleClickControl.instance.RightDoubleClick == true && FacingRight() == true)
+                input.x = 2;
+        }
+
+        if (Input.GetKey(KeyCode.S))
+            input.y = -1;
+        if (Input.GetKey(KeyCode.W))
+            input.y = 1;
+        return input;
+    }
+    bool FacingRight()
+    {
+        float me = transform.position.x;
+        float them = Other.transform.position.x;
+        float Check = me - them;
+        if (Check < 0)
+            return true;
+        else
+            return false;
+    }
+    public bool CanMove()
+    {
+        bool HasSpawned = (Other != null);
+        //Debug.Log(" Spawned: " + HasSpawned + " Spawned: " + WinController.instance.GameActive);
+        if (HasSpawned && WinController.instance.GameActive == true)
+            return true;
+        else
+            return false;
+    }
+    public bool AttacksActive()
+    {
+        if (anims[0].GetBool("LightPunch") == true || anims[0].GetBool("LightKick") == true || anims[0].GetBool("HeavyPunch") == true || anims[0].GetBool("HeavyKick") == true)
+            return true;
+        else
+            return false;
+    }
+    #endregion
 }

@@ -19,6 +19,8 @@ public class HealthControl : MonoBehaviour
     public GameObject RestartButton;
     public GameObject WaitingForPlayers;
     public TextMeshProUGUI StartingIn;
+
+    public TextMeshProUGUI Result;
     [System.Serializable]
     public class Side
     {

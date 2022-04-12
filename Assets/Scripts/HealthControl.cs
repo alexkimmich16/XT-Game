@@ -39,14 +39,16 @@ public class HealthControl : MonoBehaviour
 
     public void UpdateHealth()
     {
-        float PlayerHealthBar = (float)CharacterController.instance.CurrentHealth / (float)CharacterController.instance.MaxHealth;
+        int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
+        float PlayerHealthBar = MyHealth / (float)CharacterController.instance.MaxHealth;
         Sides[0].SetFillSize(PlayerHealthBar);
-
-        if(PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
+        if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
         {
-            float EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]) / CharacterController.instance.MaxHealth;
-            Sides[1].SetFillSize((float)EnemyHealth);
-            WinController.instance.TryOutCome(CharacterController.instance.CurrentHealth, EnemyHealth);
+            int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
+            Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
+            float EnemyHealthBar = EnemyHealth / CharacterController.instance.MaxHealth;
+            Sides[1].SetFillSize(EnemyHealthBar);
+            WinController.instance.TryOutCome(MyHealth, EnemyHealth);
         }
     }
     

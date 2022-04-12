@@ -61,13 +61,12 @@ public class CharacterController : MonoBehaviour
     }
     public void TakeDamage(DamageInfo DamageStat)
     {
-        Debug.Log("takedamage");
+        //Debug.Log("takedamage");
         string anim = "";
         if (DamageStat.HitType == AttackType.Low)
             anim = "MidHit";
         else if (DamageStat.HitType == AttackType.High)
             anim = "HighHit";
-        Debug.Log("TakeDamage");
         foreach (Animator A in anims)
             A.Play(anim);
 
@@ -80,10 +79,11 @@ public class CharacterController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         bool HitBox = collision.transform.GetComponent<HitBoxControl>();
-        Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox);
-        if (CanTakeDamage == true && collision.transform.GetComponent<HitBoxControl>() && collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == true)
+        bool MyPhotonView = collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == false;
+        Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox + "  MyPhotonView: " + MyPhotonView);
+        if (CanTakeDamage == true && HitBox == true && MyPhotonView == true)
         {
-            Debug.Log("hit");
+            //Debug.Log("hit");
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
             DamageInfo DamageStat = new DamageInfo();
             DamageStat.HitType = control.type;

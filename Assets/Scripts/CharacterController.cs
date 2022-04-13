@@ -61,12 +61,10 @@ public class CharacterController : MonoBehaviour
         Spawned = SpawnedOBJ;
         if (NetworkManager.instance.ViewPlayer == false)
             Spawned.transform.GetChild(0).gameObject.SetActive(false);
-
         anims[1] = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
     public void TakeDamage(DamageInfo DamageStat)
     {
-        //Debug.Log("takedamage");
         string anim = "";
         if (DamageStat.HitType == AttackType.Low)
             anim = "MidHit";
@@ -88,11 +86,11 @@ public class CharacterController : MonoBehaviour
         Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox + "  MyPhotonView: " + MyPhotonView);
         if (CanTakeDamage == true && HitBox == true && MyPhotonView == true)
         {
-            //Debug.Log("hit");
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
             DamageInfo DamageStat = new DamageInfo();
             DamageStat.HitType = control.type;
             DamageStat.Damage = control.Damage;
+            Other.GetComponent<PhotonView>().RPC("PlayAnimation", RpcTarget.All, control.type);
             TakeDamage(DamageStat);
             StartCoroutine(InvincibilityWait());
         }
@@ -100,8 +98,10 @@ public class CharacterController : MonoBehaviour
     IEnumerator InvincibilityWait()
     {
         CanTakeDamage = false;
+        SetPlayerBool(Invincible, false, PhotonNetwork.LocalPlayer);
         yield return new WaitForSeconds(Invincibility);
         CanTakeDamage = true;
+        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
     }
     void Start()
     {
@@ -112,17 +112,23 @@ public class CharacterController : MonoBehaviour
         mycapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         CurrentHealth = MaxHealth;
     }
-    
     private void FixedUpdate()
     {
         if (CanMove() == false) { return; }
 
         Walk();
     }
-    
     void Update()
     {
         if (CanMove() == false) { return; }
+
+        bool OtherInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
+        Color Othertmp = Other.GetComponent<SpriteRenderer>().color;
+        
+        if (OtherInvincible == true)
+            Othertmp.a = 1f;
+        else
+            Othertmp.a = 0.5f;
 
         Color tmp = GetComponent<SpriteRenderer>().color;
         if (CanTakeDamage == true)
@@ -144,7 +150,6 @@ public class CharacterController : MonoBehaviour
         if (DetectingJumpLand = true && Grounded() == true && Jumping == true)
             JumpLand();
     }
-    
     void ConvertToAnimation(Vector2 Keys)
     {
         int KeyX = (int)Keys.x;
@@ -233,7 +238,6 @@ public class CharacterController : MonoBehaviour
             A.SetBool("Jump", false);
         Jumping = false;
     }
-    
     void Walk()
     {
         TrueSpeed = myyRigidbody.velocity;
@@ -256,8 +260,6 @@ public class CharacterController : MonoBehaviour
             myyRigidbody.velocity = new Vector2(StartSpeed, myyRigidbody.velocity.y);
         }
 
-
-
         float Speed = 0;
         if (Grounded() == false)
             Speed = ArialSpeed;
@@ -268,8 +270,6 @@ public class CharacterController : MonoBehaviour
         else if (GetInput().x == 2 || GetInput().x == -2)
             Speed = runspeed;
         Speed = Speed / 10;
-
-        
 
         float NewVelocity = myyRigidbody.velocity.x + GetInput().x * Speed;
         Vector2 Pvelocity = new Vector2(NewVelocity, myyRigidbody.velocity.y);
@@ -368,4 +368,11 @@ public class CharacterController : MonoBehaviour
             return false;
     }
     #endregion
+
+    ///playing hit animation - 
+    ///playing invicibility - DONE
+    ///syncing health bar - DONE
+    ///
+
+
 }

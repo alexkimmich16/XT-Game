@@ -66,7 +66,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             WinController.instance.GameActive = false;
             WinController.instance.HasStarted = false;
         }
-        else
+        else if(PhotonNetwork.PlayerList.Length == 2)
         {
             //CharacterController.instance.Other = GetEnemyPlayer();
             CharacterController.instance.SetOther(GetEnemyPlayer());
@@ -96,6 +96,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         CharacterController.instance.SetOther(GetEnemyPlayer());
         SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
         if (PhotonNetwork.PlayerList.Length == 1)
         {
             CharacterController.instance.transform.position = Spawns[0].position;

@@ -24,6 +24,8 @@ namespace Custom
 
         public static string AttackTeamCount = "AttackTeam";
         public static string DefenseTeamCount = "DefenseTeam";
+
+        public static string Invincible = "Invincible";
         
         public static int GetLocal()
         {

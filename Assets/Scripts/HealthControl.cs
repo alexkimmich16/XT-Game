@@ -34,21 +34,29 @@ public class HealthControl : MonoBehaviour
     }
 
     [PunRPC]
-    void SetPosition(int Spawn)
+    void PlayAnimation(AttackType attack)
     {
-        transform.position = NetworkManager.instance.Spawns[Spawn].position;
+        Debug.Log("Anim: " + attack);
+        
+        if (attack == AttackType.High)
+            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("HighHit");
+        else if(attack == AttackType.Low)
+            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("MidHit");
+        //transform.position = NetworkManager.instance.Spawns[Spawn].position;
     }
 
     public void UpdateHealth()
     {
+        
+        float Max = CharacterController.instance.MaxHealth;
         int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
-        float PlayerHealthBar = MyHealth / (float)CharacterController.instance.MaxHealth;
+        float PlayerHealthBar = MyHealth / Max;
         Sides[0].SetFillSize(PlayerHealthBar);
         if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
         {
             int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
             Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
-            float EnemyHealthBar = EnemyHealth / CharacterController.instance.MaxHealth;
+            float EnemyHealthBar = EnemyHealth / Max;
             Sides[1].SetFillSize(EnemyHealthBar);
             WinController.instance.TryOutCome(MyHealth, EnemyHealth);
         }
@@ -65,7 +73,7 @@ public class HealthControl : MonoBehaviour
     }
     private void Start()
     {
-        UpdateHealth();
+        //UpdateHealth();
     }
 
 

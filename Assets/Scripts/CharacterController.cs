@@ -84,7 +84,13 @@ public class CharacterController : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         bool HitBox = collision.transform.GetComponent<HitBoxControl>();
-        bool MyPhotonView = collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == false;
+
+        bool MyPhotonView = false;
+        if (collision.transform.parent != null)
+            if (collision.transform.parent.parent != null)
+                if (collision.transform.parent.parent.GetComponent<PhotonView>())
+                    if (collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == false)
+                        MyPhotonView = true;
         //Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox + "  MyPhotonView: " + MyPhotonView);
         if (CanTakeDamage == true && HitBox == true && MyPhotonView == true)
         {

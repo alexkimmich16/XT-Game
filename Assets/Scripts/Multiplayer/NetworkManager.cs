@@ -14,8 +14,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public bool DebugScript = false;
     private bool FirstRoomFrame = false;
     private bool AlreadyInRoom = false;
-    public bool ViewPlayer;
+    //public bool ViewPlayer;
     public List<Transform> Spawns;
+
+    private int LastCount;
+
     void Start()
     {
         ConnectToServer();
@@ -42,8 +45,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        if (DebugScript == true)
-            Debug.Log("joined a room");
+        //if (DebugScript == true)
+            //Debug.Log("joined a room");
 
         //SetPlayerInt(PlayerHealth, );
 
@@ -52,26 +55,26 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        if (DebugScript == true)
-            Debug.Log("a new player joined");
+        //if (DebugScript == true)
+           // Debug.Log("a new player joined");
         
         base.OnPlayerEnteredRoom(newPlayer);
     }
 
     private void Update()
     {
-        
-        if (PhotonNetwork.PlayerList.Length == 1)
+        if(LastCount == 2 && PhotonNetwork.PlayerList.Length == 1)
         {
-            WinController.instance.GameActive = false;
-            WinController.instance.HasStarted = false;
+            //player left
+            WinController.instance.EndGame();
         }
-        else if(PhotonNetwork.PlayerList.Length == 2)
+        else if (LastCount == 1 && PhotonNetwork.PlayerList.Length == 2)
         {
-            //CharacterController.instance.Other = GetEnemyPlayer();
+            //player joined
             CharacterController.instance.SetOther(GetEnemyPlayer());
             HealthControl.instance.UpdateHealth();
         }
+        LastCount = PhotonNetwork.PlayerList.Length;
         
         if (FirstRoomFrame == true)
         {
@@ -134,16 +137,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     public GameObject GetPlayer()
     {
         GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
-        //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
-            //Debug.Log(Players.Length);
             if (Players[i].GetComponent<PhotonView>().IsMine == true)
             {
                 return Players[i];
             }
         }
-
         return null;
     }
 }

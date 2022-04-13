@@ -9,10 +9,11 @@ public class WinController : MonoBehaviour
     public static WinController instance;
     private void Awake() { instance = this; }
     public bool GameActive = false;
-    public bool HasStarted = false;
+    //public bool HasStarted = false;
     public float CountDownTime;
     public float CountDownTimer;
     public bool CountingDown;
+    private bool AwaitingStart = true;
     private void Start()
     {
         CountDownTimer = CountDownTime;
@@ -20,10 +21,10 @@ public class WinController : MonoBehaviour
     }
     void Update()
     {
-        if(PhotonNetwork.PlayerList.Length > 1 && CountingDown == false && HasStarted == false)
+        if(PhotonNetwork.PlayerList.Length > 1 && CountingDown == false && AwaitingStart == true)
         {
             CountingDown = true;
-            HasStarted = true;
+            AwaitingStart = false;
             //could set position here, first frame active
         }
         if(CountingDown == true)
@@ -49,8 +50,7 @@ public class WinController : MonoBehaviour
     {
         if(MyHealth < 0 || OtherHealth < 0)
         {
-            GameActive = false;
-            HealthControl.instance.RestartButton.SetActive(true);
+            EndGame();
             if (MyHealth < 0)
             {
                 HealthControl.instance.Result.text = "You Lose Dumbass!";
@@ -62,30 +62,35 @@ public class WinController : MonoBehaviour
                 HealthControl.instance.Result.text = "You Win!";
             }
         }
-        
-
     }
-    public void Restart()
+    public void EndGame()
     {
         GameActive = false;
-        HasStarted = false;
+        HealthControl.instance.RestartButton.SetActive(true);
+
+        CharacterController.instance.CurrentHealth = CharacterController.instance.MaxHealth;
+        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+
+        CharacterController.instance.transform.position = NetworkManager.instance.Spawns[0].position;
+    }
+
+    
+    public void Restart()
+    {
+        AwaitingStart = true;
         HealthControl.instance.RestartButton.SetActive(false);
         HealthControl.instance.Result.gameObject.SetActive(false);
         if (PhotonNetwork.PlayerList.Length > 1)
         {
             //normal restart
-            //SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[0]);
-            //SetPlayerInt(PlayerHealth, CharacterController.instance.MaxHealth, PhotonNetwork.PlayerList[1]);
-            CharacterController.instance.transform.position = NetworkManager.instance.Spawns[0].position;
-            gameObject.GetComponent<PhotonView>().RPC("SetPosition", RpcTarget.Others, 1);
+            Debug.Log("SentRestart");
+            CharacterController.instance.Spawned.GetComponent<PhotonView>().RPC("Respawn", RpcTarget.All);
         }
         else if (PhotonNetwork.PlayerList.Length == 1)
         {
             //one player quit
         }
 
-        //each player moves to spawn
-        //set max health
         //wait time for start and countdown
     }
 

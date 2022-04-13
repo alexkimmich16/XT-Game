@@ -33,21 +33,8 @@ public class HealthControl : MonoBehaviour
         }
     }
 
-    [PunRPC]
-    void PlayAnimation(AttackType attack)
-    {
-        Debug.Log("Anim: " + attack);
-        
-        if (attack == AttackType.High)
-            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("HighHit");
-        else if(attack == AttackType.Low)
-            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("MidHit");
-        //transform.position = NetworkManager.instance.Spawns[Spawn].position;
-    }
-
     public void UpdateHealth()
     {
-        
         float Max = CharacterController.instance.MaxHealth;
         int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
         float PlayerHealthBar = MyHealth / Max;
@@ -55,13 +42,19 @@ public class HealthControl : MonoBehaviour
         if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
         {
             int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
-            Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
             float EnemyHealthBar = EnemyHealth / Max;
             Sides[1].SetFillSize(EnemyHealthBar);
             WinController.instance.TryOutCome(MyHealth, EnemyHealth);
+
+            if (NetworkManager.instance.DebugScript == true)
+            {
+                bool MyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetLocal()]);
+                bool EnemyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
+                Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
+                Debug.Log("MyInvincible:  " + MyInvincible + "  EnemyInvincible:  " + EnemyInvincible);
+            }
         }
     }
-    
     public void DisplayWin(int Side)
     {
         for(int i = 0; i > Sides[Side].Dots.Count; i++)

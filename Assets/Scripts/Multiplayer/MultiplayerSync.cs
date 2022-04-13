@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
-
+using static Custom.Cus;
 public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
 {
     public Transform NetworkPlayer;
@@ -11,11 +11,31 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     private float CheckView;
     public Animator animator;
     public int Move;
-    
+
+    [PunRPC]
+    void PlayAnimation(AttackType attack)
+    {
+        Debug.Log("RPCAnim: " + attack + "  GameObject: " + gameObject.name);
+        if (attack == AttackType.High)
+            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("HighHit");
+        else if (attack == AttackType.Low)
+            CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("MidHit");
+    }
+    [PunRPC]
+    void Respawn()
+    {
+        Debug.Log("Recieve Respawn");
+
+        //reset health
+        CharacterController.instance.CurrentHealth = CharacterController.instance.MaxHealth;
+        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+
+        //set position
+        CharacterController.instance.transform.position = NetworkManager.instance.Spawns[GetLocal()].position;
+    }
+
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-
-        //Debug.Log("111");
         if(animator != null)
         {
             //Debug.Log("222");
@@ -44,9 +64,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
             }
         }
     }
-   
- 
-  
     private void Start()
     {
         Size = transform.localScale.x;

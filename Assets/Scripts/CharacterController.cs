@@ -43,6 +43,8 @@ public class CharacterController : MonoBehaviour
     public int CurrentHealth;
     public int MaxHealth = 120;
 
+    
+
     public GameObject Spawned;
     public GameObject Other;
     public void Reset()
@@ -59,8 +61,8 @@ public class CharacterController : MonoBehaviour
     public void SetSpawned(GameObject SpawnedOBJ)
     {
         Spawned = SpawnedOBJ;
-        if (NetworkManager.instance.ViewPlayer == false)
-            Spawned.transform.GetChild(0).gameObject.SetActive(false);
+        //if (NetworkManager.instance.ViewPlayer == false)
+            //Spawned.transform.GetChild(0).gameObject.SetActive(false);
         anims[1] = Spawned.transform.GetChild(0).GetComponent<Animator>();
     }
     public void TakeDamage(DamageInfo DamageStat)
@@ -83,7 +85,7 @@ public class CharacterController : MonoBehaviour
     {
         bool HitBox = collision.transform.GetComponent<HitBoxControl>();
         bool MyPhotonView = collision.transform.parent.parent.GetComponent<PhotonView>().IsMine == false;
-        Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox + "  MyPhotonView: " + MyPhotonView);
+        //Debug.Log("TakeDamage: " + CanTakeDamage + "  HitBox: " + HitBox + "  MyPhotonView: " + MyPhotonView);
         if (CanTakeDamage == true && HitBox == true && MyPhotonView == true)
         {
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
@@ -122,6 +124,7 @@ public class CharacterController : MonoBehaviour
     {
         if (CanMove() == false) { return; }
 
+        Debug.Log("IsBeingHit: " + IsBeingHit());
         bool OtherInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
         Color Othertmp = Other.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
         
@@ -318,6 +321,13 @@ public class CharacterController : MonoBehaviour
             return false;
     }
 
+    public bool IsBeingHit()
+    {
+        if (anims[0].GetCurrentAnimatorStateInfo(0).IsName("MidHit") || anims[0].GetCurrentAnimatorStateInfo(0).IsName("HighHit"))
+            return true;
+        else
+            return false;
+    }
     Vector2 GetInput()
     {
         Vector2 input = Vector2.zero;

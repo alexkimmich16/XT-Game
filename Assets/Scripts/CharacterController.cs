@@ -123,7 +123,7 @@ public class CharacterController : MonoBehaviour
         if (CanMove() == false) { return; }
 
         bool OtherInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
-        Color Othertmp = Other.GetComponent<SpriteRenderer>().color;
+        Color Othertmp = Other.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
         
         if (OtherInvincible == true)
             Othertmp.a = 1f;

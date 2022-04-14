@@ -71,6 +71,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else if (LastCount == 1 && PhotonNetwork.PlayerList.Length == 2)
         {
             //player joined
+            Debug.Log(GetEnemyPlayer().name);
             CharacterController.instance.SetOther(GetEnemyPlayer());
             HealthControl.instance.UpdateHealth();
         }
@@ -108,7 +109,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         else
         {
             CharacterController.instance.transform.position = Spawns[1].position;
-            //CharacterController.instance.Spawned.GetComponent<PhotonView>().RPC("SetObjective", RpcTarget.Others, CharacterController.instance.Spawned);
         }
             
         HealthControl.instance.UpdateHealth();

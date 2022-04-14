@@ -3129,7 +3129,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29973bd9c1cbf2d4bbab83bf5a710d98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DebugScript: 1
+  DebugScript: 0
   Spawns:
   - {fileID: 1516538089}
   - {fileID: 274749216}

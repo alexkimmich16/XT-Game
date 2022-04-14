@@ -130,7 +130,7 @@ public class CharacterController : MonoBehaviour
     {
         if (CanMove() == false) { return; }
 
-        Debug.Log("IsBeingHit: " + IsBeingHit());
+        //Debug.Log("IsBeingHit: " + IsBeingHit());
         bool OtherInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
         Color Othertmp = Other.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
         

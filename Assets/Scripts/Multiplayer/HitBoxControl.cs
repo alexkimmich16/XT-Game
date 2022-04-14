@@ -15,7 +15,7 @@ public class HitBoxControl : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         //Debug.Log("TriggerHitbox: " + collision.transform.name);
-
+        /*
         if (collision.transform.tag == "Player")
         {
             //Debug.Log("TriggerHitbox2");
@@ -24,5 +24,6 @@ public class HitBoxControl : MonoBehaviour
             DamageStat.Damage = Damage;
             collision.transform.GetComponent<CharacterController>().TakeDamage(DamageStat);
         }
+        */
     }
 }

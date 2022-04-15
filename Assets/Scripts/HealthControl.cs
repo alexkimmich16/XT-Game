@@ -35,25 +35,29 @@ public class HealthControl : MonoBehaviour
 
     public void UpdateHealth()
     {
-        float Max = CharacterController.instance.MaxHealth;
-        int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
-        float PlayerHealthBar = MyHealth / Max;
-        Sides[0].SetFillSize(PlayerHealthBar);
-        if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.LocalPlayer))
+        if (Exists("Health", PhotonNetwork.LocalPlayer))
         {
-            int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
-            float EnemyHealthBar = EnemyHealth / Max;
-            Sides[1].SetFillSize(EnemyHealthBar);
-            WinController.instance.TryOutCome(MyHealth, EnemyHealth);
-
-            if (NetworkManager.instance.DebugScript == true)
+            float Max = CharacterController.instance.MaxHealth;
+            int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
+            float PlayerHealthBar = MyHealth / Max;
+            Sides[0].SetFillSize(PlayerHealthBar);
+            if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.PlayerList[GetOther()]))
             {
-                bool MyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetLocal()]);
-                bool EnemyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
-                Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
-                Debug.Log("MyInvincible:  " + MyInvincible + "  EnemyInvincible:  " + EnemyInvincible);
+                int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
+                float EnemyHealthBar = EnemyHealth / Max;
+                Sides[1].SetFillSize(EnemyHealthBar);
+                WinController.instance.TryOutCome(MyHealth, EnemyHealth);
+
+                if (NetworkManager.instance.DebugScript == true)
+                {
+                    bool MyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetLocal()]);
+                    bool EnemyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
+                    Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
+                    Debug.Log("MyInvincible:  " + MyInvincible + "  EnemyInvincible:  " + EnemyInvincible);
+                }
             }
         }
+        
     }
     public void DisplayWin(int Side)
     {

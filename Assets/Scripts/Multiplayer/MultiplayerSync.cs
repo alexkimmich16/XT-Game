@@ -16,6 +16,7 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     void PlayAnimation(AttackType attack)
     {
         //Debug.Log("GameObject: " + gameObject.name);
+        HealthControl.instance.UpdateHealth();
         if (attack == AttackType.High)
             CharacterController.instance.Other.transform.GetChild(0).GetComponent<Animator>().Play("HighHit");
         else if (attack == AttackType.Low)

@@ -131,11 +131,13 @@ public class CharacterController : MonoBehaviour
         //Debug.Log("IsBeingHit: " + IsBeingHit());
         bool OtherInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
         Color Othertmp = Other.transform.GetChild(0).GetComponent<SpriteRenderer>().color;
-        
+        Debug.Log("OtherInvincible: " + OtherInvincible);
         if (OtherInvincible == true)
             Othertmp.a = 1f;
         else
             Othertmp.a = 0.5f;
+        Other.transform.GetChild(0).GetComponent<SpriteRenderer>().color = Othertmp;
+
 
         Color tmp = GetComponent<SpriteRenderer>().color;
         if (CanTakeDamage == true)

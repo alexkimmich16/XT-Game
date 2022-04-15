@@ -39,7 +39,6 @@ public class MultiplayerSync : MonoBehaviourPunCallbacks, IPunObservable
     {
         if(animator != null)
         {
-            //Debug.Log("222");
             if (stream.IsWriting)
             {
                 //This is our player, we need to send our actual position to network

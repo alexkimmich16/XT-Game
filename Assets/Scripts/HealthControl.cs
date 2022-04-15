@@ -41,8 +41,10 @@ public class HealthControl : MonoBehaviour
             int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
             float PlayerHealthBar = MyHealth / Max;
             Sides[0].SetFillSize(PlayerHealthBar);
+            Debug.Log("pt1");
             if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.PlayerList[GetOther()]))
             {
+                Debug.Log("pt2");
                 int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
                 float EnemyHealthBar = EnemyHealth / Max;
                 Sides[1].SetFillSize(EnemyHealthBar);

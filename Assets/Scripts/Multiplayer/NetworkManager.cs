@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Photon.Realtime;
 using static Custom.Cus;
 using Hashtable = ExitGames.Client.Photon.Hashtable;
+using System.Collections;
+
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
     #region Singleton + classes
@@ -98,9 +100,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public void OnFirstMultiplayerFrame()
     {
-        CharacterController.instance.SetOther(GetEnemyPlayer());
-        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
-        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
+        StartCoroutine(ConnectedFirstFrame());
         if (PhotonNetwork.PlayerList.Length == 1)
         {
             CharacterController.instance.transform.position = Spawns[0].position;
@@ -111,11 +111,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             CharacterController.instance.transform.position = Spawns[1].position;
         }
             
-        HealthControl.instance.UpdateHealth();
-        if(GetPlayer() != null)
-        {
+        
+    }
 
-        }
+    IEnumerator ConnectedFirstFrame()
+    {
+        yield return new WaitForSeconds(0.1f);
+        CharacterController.instance.SetOther(GetEnemyPlayer());
+        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
+
+        HealthControl.instance.UpdateHealth();
         GetPlayer().transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
     }
 

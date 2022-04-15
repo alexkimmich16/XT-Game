@@ -28,5 +28,9 @@ public class HitBoxControl : MonoBehaviour
     }
 
     //invincibility
-    //health not showing on start, and on hitting enemy
+    //health not showing on start
+
+
+    //can't touch button
+    //hitbox issue sometimes
 }

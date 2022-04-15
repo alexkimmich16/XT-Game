@@ -43,8 +43,6 @@ public class CharacterController : MonoBehaviour
     public int CurrentHealth;
     public int MaxHealth = 120;
 
-    
-
     public GameObject Spawned;
     public GameObject Other;
     public void Reset()

@@ -27,10 +27,9 @@ public class HitBoxControl : MonoBehaviour
         */
     }
 
-    //invincibility
     //health not showing on start
 
-
+    //state control
     //can't touch button
     //hitbox issue sometimes
 }

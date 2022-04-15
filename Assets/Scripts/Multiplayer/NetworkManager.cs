@@ -100,6 +100,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public void OnFirstMultiplayerFrame()
     {
+        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
+        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
         StartCoroutine(ConnectedFirstFrame());
         if (PhotonNetwork.PlayerList.Length == 1)
         {
@@ -118,8 +120,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         yield return new WaitForSeconds(0.1f);
         CharacterController.instance.SetOther(GetEnemyPlayer());
-        SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
-        SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
 
         HealthControl.instance.UpdateHealth();
         GetPlayer().transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;

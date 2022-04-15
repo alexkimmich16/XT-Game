@@ -30,6 +30,4 @@ public class HitBoxControl : MonoBehaviour
     //health not showing on start
 
     //state control
-    //can't touch button
-    //hitbox issue sometimes
 }

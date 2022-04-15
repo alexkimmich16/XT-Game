@@ -83,7 +83,7 @@ public class WinController : MonoBehaviour
         if (PhotonNetwork.PlayerList.Length > 1)
         {
             //normal restart
-            Debug.Log("SentRestart");
+            //Debug.Log("SentRestart");
             CharacterController.instance.Spawned.GetComponent<PhotonView>().RPC("Respawn", RpcTarget.All);
         }
         else if (PhotonNetwork.PlayerList.Length == 1)

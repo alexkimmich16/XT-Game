@@ -92,7 +92,7 @@ public class CharacterController : MonoBehaviour
                         MyPhotonView = true;
 
         Debug.Log("Name: " + collision.transform.name);
-        if (CanTakeDamage == true && HitBox == true && MyPhotonView == true && )
+        if (CanTakeDamage == true && HitBox == true && MyPhotonView == true)
         {
             HitBoxControl control = collision.transform.GetComponent<HitBoxControl>();
             DamageInfo DamageStat = new DamageInfo();

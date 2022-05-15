@@ -42,8 +42,33 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = 2;
         roomOptions.IsVisible = true;
         roomOptions.IsOpen = true;
+        JoinRandomRoom();
+        //PhotonNetwork.JoinOrCreateRoom(GetRoomJoin(), roomOptions, TypedLobby.Default);
 
-        PhotonNetwork.JoinOrCreateRoom("Room 1", roomOptions, TypedLobby.Default);
+
+    }
+    void JoinRandomRoom()
+    {
+        PhotonNetwork.JoinRandomRoom(null, 2);
+    }
+    void CreateRoom(string roomName, byte maxPlayers)
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        roomOptions.IsVisible = true;
+        roomOptions.IsOpen = true;
+        PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
+    }
+    public override void OnJoinRandomFailed(short returnCode, string message)
+    {
+        if(DebugScript == true)
+        {
+            Debug.Log(message + returnCode);
+            Debug.Log(" failed to join random game");
+        }
+
+        string RoomName = "Room " + PhotonNetwork.CountOfRooms + 1;
+        CreateRoom(RoomName, 2);
     }
     public override void OnJoinedRoom()
     {

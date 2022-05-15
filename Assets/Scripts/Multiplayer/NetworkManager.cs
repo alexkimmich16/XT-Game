@@ -30,13 +30,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
         if (DebugScript == true)
         {
-            //Debug.Log("try connect to server");
+            Debug.Log("try connect to server");
         }
     }
     public override void OnConnectedToMaster()
     {
-        //if (DebugScript == true)
-            //Debug.Log("connected to server");
+        if (DebugScript == true)
+            Debug.Log("connected to server");
         base.OnConnectedToMaster();
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers = 2;
@@ -58,12 +58,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         roomOptions.IsVisible = true;
         roomOptions.IsOpen = true;
         PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
+        if (DebugScript == true)
+            Debug.Log("Creating Room");
     }
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         if(DebugScript == true)
         {
-            Debug.Log(message + returnCode);
+            //Debug.Log(message + returnCode);
             Debug.Log(" failed to join random game");
         }
 
@@ -72,14 +74,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public override void OnJoinedRoom()
     {
-        //if (DebugScript == true)
-            //Debug.Log("joined a room");
+        if (DebugScript == true)
+            Debug.Log("joined a room");
 
         //SetPlayerInt(PlayerHealth, );
 
         //CharacterController.instance.Initialize(PhotonNetwork.PlayerList.Length - 1);
         base.OnJoinedRoom();
     }
+    
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         //if (DebugScript == true)

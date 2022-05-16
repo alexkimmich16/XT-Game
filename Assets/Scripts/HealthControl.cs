@@ -41,10 +41,10 @@ public class HealthControl : MonoBehaviour
             int MyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetLocal()]);
             float PlayerHealthBar = MyHealth / Max;
             Sides[0].SetFillSize(PlayerHealthBar);
-            Debug.Log("pt1");
+            //Debug.Log("pt1");
             if (PhotonNetwork.PlayerList.Length > 1 && Exists("Health", PhotonNetwork.PlayerList[GetOther()]))
             {
-                Debug.Log("pt2");
+                //Debug.Log("pt2");
                 int EnemyHealth = GetPlayerInt(PlayerHealth, PhotonNetwork.PlayerList[GetOther()]);
                 float EnemyHealthBar = EnemyHealth / Max;
                 Sides[1].SetFillSize(EnemyHealthBar);
@@ -54,8 +54,8 @@ public class HealthControl : MonoBehaviour
                 {
                     bool MyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetLocal()]);
                     bool EnemyInvincible = GetPlayerBool(Invincible, PhotonNetwork.PlayerList[GetOther()]);
-                    Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
-                    Debug.Log("MyInvincible:  " + MyInvincible + "  EnemyInvincible:  " + EnemyInvincible);
+                    //Debug.Log("MyHealth:  " + MyHealth + "  EnemyHealth:  " + EnemyHealth);
+                    //Debug.Log("MyInvincible:  " + MyInvincible + "  EnemyInvincible:  " + EnemyInvincible);
                 }
             }
         }
@@ -74,9 +74,6 @@ public class HealthControl : MonoBehaviour
     {
         //UpdateHealth();
     }
-
-
-    //set objective to each other
-    //on one person leaving restart
-    //
+    //both players shouldn't restart
+    //both players appear to be taking hits, but not being damaged
 }

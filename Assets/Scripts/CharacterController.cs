@@ -113,8 +113,8 @@ public class CharacterController : MonoBehaviour
     {
         Size = transform.localScale.x;
         myyRigidbody = GetComponent<Rigidbody2D>();
-        anims.Add(GetComponent<Animator>());
-        anims.Add(null);
+        //anims.Add(GetComponent<Animator>());
+        //anims.Add(null);
         mycapsuleCollider2D = GetComponent<CapsuleCollider2D>();
         CurrentHealth = MaxHealth;
     }
@@ -377,10 +377,7 @@ public class CharacterController : MonoBehaviour
     }
     public bool AttacksActive()
     {
-        if (anims[0].GetBool("LightPunch") == true || anims[0].GetBool("LightKick") == true || anims[0].GetBool("HeavyPunch") == true || anims[0].GetBool("HeavyKick") == true)
-            return true;
-        else
-            return false;
+        return anims[0].GetBool("LightPunch") == true || anims[0].GetBool("LightKick") == true || anims[0].GetBool("HeavyPunch") == true || anims[0].GetBool("HeavyKick") == true;
     }
     #endregion
 

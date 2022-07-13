@@ -14,53 +14,36 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     #endregion
     public bool DebugScript = false;
-    private bool FirstRoomFrame = false;
-    private bool AlreadyInRoom = false;
+    private bool FirstRoomFrame = true;
     //public bool ViewPlayer;
     public List<Transform> Spawns;
-
+    
     private int LastCount;
-
+    public static RoomOptions RoomSettings()
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers = 2;
+        roomOptions.IsVisible = true;
+        roomOptions.IsOpen = true;
+        //roomOptions. = true;
+        return roomOptions;
+    }
     void Start()
     {
-        ConnectToServer();
-    }
-    void ConnectToServer()
-    {
-        PhotonNetwork.ConnectUsingSettings();
-        if (DebugScript == true)
-        {
-            Debug.Log("try connect to server");
-        }
+
     }
     public override void OnConnectedToMaster()
     {
         if (DebugScript == true)
             Debug.Log("connected to server");
         base.OnConnectedToMaster();
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
-        roomOptions.IsVisible = true;
-        roomOptions.IsOpen = true;
-        JoinRandomRoom();
+        //RoomSettings()
+        //JoinRandomRoom();
         //PhotonNetwork.JoinOrCreateRoom(GetRoomJoin(), roomOptions, TypedLobby.Default);
 
 
     }
-    void JoinRandomRoom()
-    {
-        PhotonNetwork.JoinRandomRoom(null, 2);
-    }
-    void CreateRoom(string roomName, byte maxPlayers)
-    {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers = 2;
-        roomOptions.IsVisible = true;
-        roomOptions.IsOpen = true;
-        PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
-        if (DebugScript == true)
-            Debug.Log("Creating Room");
-    }
+
     public override void OnJoinRandomFailed(short returnCode, string message)
     {
         if(DebugScript == true)
@@ -70,7 +53,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         }
 
         string RoomName = "Room " + PhotonNetwork.CountOfRooms + 1;
-        CreateRoom(RoomName, 2);
     }
     public override void OnJoinedRoom()
     {
@@ -93,60 +75,50 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void Update()
     {
-        if(LastCount == 2 && PhotonNetwork.PlayerList.Length == 1)
+        if (BattleLoginManager.Spawned == false)
+            return;
+
+        if (FirstRoomFrame == true)
+        {
+            OnFirstMultiplayerFrame();
+            FirstRoomFrame = false;
+        }
+        int Players = PlayerCount();
+        if (LastCount == 2 && Players == 1)
         {
             //player left
             WinController.instance.EndGame();
         }
-        else if (LastCount == 1 && PhotonNetwork.PlayerList.Length == 2)
+        else if (LastCount == 1 && Players == 2)
         {
             //player joined
             Debug.Log(GetEnemyPlayer().name);
             CharacterController.instance.SetOther(GetEnemyPlayer());
             HealthControl.instance.UpdateHealth();
         }
-        LastCount = PhotonNetwork.PlayerList.Length;
-        
-        if (FirstRoomFrame == true)
-        {
-            OnFirstMultiplayerFrame();
-            FirstRoomFrame = false;
-        }
-        
-        if (PhotonNetwork.InRoom == true && FirstRoomFrame == false && AlreadyInRoom == false)
-        {
-            FirstRoomFrame = true;
-            AlreadyInRoom = true;
-        }
-        
-        
-        if (FirstRoomFrame == true && AlreadyInRoom == false)
-        {
-            FirstRoomFrame = true;
-            AlreadyInRoom = false;
-        }
+        LastCount = Players;
+    }
+    public int PlayerCount()
+    {
+        PhotonView[] Players = FindObjectsOfType<PhotonView>();
+        return Players.Length;
     }
     public void OnFirstMultiplayerFrame()
     {
         SetPlayerInt(PlayerHealth, CharacterController.instance.CurrentHealth, PhotonNetwork.LocalPlayer);
         SetPlayerBool(Invincible, true, PhotonNetwork.LocalPlayer);
-        StartCoroutine(ConnectedFirstFrame());
-        if (PhotonNetwork.PlayerList.Length == 1)
-        {
-            CharacterController.instance.transform.position = Spawns[0].position;
-        }
-            
-        else
-        {
-            CharacterController.instance.transform.position = Spawns[1].position;
-        }
-            
-        
+
+        CharacterController.instance.transform.position = Spawns[PhotonNetwork.PlayerList.Length - 1].position;
+        StartCoroutine(WaitingForOther());
     }
 
-    IEnumerator ConnectedFirstFrame()
+    IEnumerator WaitingForOther()
     {
-        yield return new WaitForSeconds(0.1f);
+        while (GetEnemyPlayer() == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        
         CharacterController.instance.SetOther(GetEnemyPlayer());
 
         HealthControl.instance.UpdateHealth();
@@ -155,14 +127,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     public GameObject GetEnemyPlayer()
     {
-        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        PhotonView[] Players = FindObjectsOfType<PhotonView>();
         //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
             //Debug.Log(Players.Length);
-            if (Players[i].GetComponent<PhotonView>().IsMine == false)
+            if (Players[i].IsMine == false)
             {
-                return Players[i];
+                return Players[i].gameObject;
             }
         }
         
@@ -170,12 +142,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     }
     public GameObject GetPlayer()
     {
-        GameObject[] Players = GameObject.FindGameObjectsWithTag("Player");
+        PhotonView[] Players = FindObjectsOfType<PhotonView>();
+        //Debug.Log(Players.Length);
         for (int i = 0; i < Players.Length; i++)
         {
-            if (Players[i].GetComponent<PhotonView>().IsMine == true)
+            //Debug.Log(Players.Length);
+            if (Players[i].IsMine == true)
             {
-                return Players[i];
+                return Players[i].gameObject;
             }
         }
         return null;

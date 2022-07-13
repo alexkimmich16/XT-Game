@@ -19,9 +19,15 @@ public class WinController : MonoBehaviour
         CountDownTimer = CountDownTime;
         HealthControl.instance.WaitingForPlayers.SetActive(true);
     }
+
+    public bool BothJoined()
+    {
+        PhotonView[] Players = FindObjectsOfType<PhotonView>();
+        return Players.Length == 2;
+    }
     void Update()
     {
-        if(PhotonNetwork.PlayerList.Length > 1 && CountingDown == false && AwaitingStart == true)
+        if(BothJoined() && CountingDown == false && AwaitingStart == true)
         {
             CountingDown = true;
             AwaitingStart = false;
